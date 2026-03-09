@@ -1,0 +1,2676 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תומר פרידמן | תזונאי קליני וספורט</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#050505',
+                        surface: '#121212',
+                        'surface-hover': '#1A1A1A',
+                        energy: '#FF4D00',
+                        'energy-light': '#FF7333',
+                        'text-main': '#FFFFFF',
+                        'text-muted': '#A1A1AA'
+                    },
+                    fontFamily: {
+                        sans: ['Assistant', 'sans-serif'],
+                        heading: ['Heebo', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'aurora': 'aurora 15s linear infinite',
+                        'rotate': 'rotate 4s linear infinite',
+                    },
+                    keyframes: {
+                        aurora: {
+                            '0%': { transform: 'translate(-50%, -1%) rotateZ(0deg)', opacity: '0.65' },
+                            '25%': { transform: 'translate(-50%, -1%) rotateZ(-7deg)', opacity: '0.5' },
+                            '50%': { transform: 'translate(-50%, -1%) rotateZ(0deg)', opacity: '0.65' },
+                            '75%': { transform: 'translate(-50%, -1%) rotateZ(7deg)', opacity: '0.5' },
+                            '100%': { transform: 'translate(-50%, -1%) rotateZ(0deg)', opacity: '0.65' }
+                        },
+                        rotate: {
+                            '100%': { transform: 'translate(-50%, -50%) rotate(1turn)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Heebo:wght@300;400;500;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom CSS (compiled previously) -->
+    <style>
+        /* Base Defaults */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #050505;
+            color: #FFFFFF;
+            font-family: 'Assistant', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            cursor: none;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .font-heading {
+            font-family: 'Heebo', sans-serif;
+        }
+
+        /* Custom Cursor */
+        #cursor-follower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 320px;
+            height: 220px;
+            border-radius: 20px;
+            background-size: cover;
+            background-position: center;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 50;
+            transform: translate(-50%, -50%) scale(0.8);
+            transition: opacity 0.3s ease, width 0.3s, height 0.3s, border-radius 0.3s;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            background-color: rgba(255, 77, 0, 0.2);
+            backdrop-filter: blur(2px);
+        }
+
+        #cursor-follower.visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1) rotate(-2deg);
+        }
+
+        #cursor-dot {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 8px;
+            background-color: #FF4D00;
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #FF4D00, #CC3D00);
+            border-radius: 10px;
+            border: 2px solid #050505;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #FF854D, #FF4D00);
+        }
+
+        /* Noise Overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .glow-blob {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: var(--color-energy, #FF4D00);
+            filter: blur(120px);
+            border-radius: 50%;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-aurora {
+            position: absolute;
+            width: 150vw;
+            height: 100vh;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: radial-gradient(ellipse at center, rgba(255, 77, 0, 0.15) 0%, rgba(5, 5, 5, 0) 60%);
+            z-index: 0;
+            pointer-events: none;
+            animation: aurora 15s linear infinite;
+        }
+
+        /* Animation utilities */
+        .anim-fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .anim-fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .anim-stagger-child {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .anim-stagger-parent.visible .anim-stagger-child {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Delay utilities for staggering manually via DOM */
+        .delay-100 {
+            transition-delay: 100ms;
+        }
+
+        .delay-200 {
+            transition-delay: 200ms;
+        }
+
+        .delay-300 {
+            transition-delay: 300ms;
+        }
+
+        .delay-400 {
+            transition-delay: 400ms;
+        }
+
+        .delay-500 {
+            transition-delay: 500ms;
+        }
+    </style>
+</head>
+
+<body class="selection:bg-energy selection:text-white">
+    <div id="cursor-follower"></div>
+    <div id="cursor-dot"></div>
+    <div class="noise-overlay"></div>
+    <main class="relative z-10 flex flex-col min-h-screen">
+<header id="site-header"
+    class="fixed top-6 left-0 right-0 z-40 mx-auto w-[95%] max-w-5xl rounded-full transition-all duration-500 bg-transparent py-4 px-6">
+    <div class="flex items-center justify-between">
+        <!-- Logo -->
+        <a href="#hero" class="flex items-center gap-3 group">
+            <div id="header-logo-container"
+                class="w-10 h-10 rounded-full flex items-center justify-center transition-colors overflow-hidden">
+                <img src="https://storage.googleapis.com/aistudio-user-content/0000000000000000/2026-03-07T05:51:19-08:00/68/image-1.png"
+                    alt="TF Logo" class="w-full h-full object-cover">
+            </div>
+            <span
+                class="font-heading font-bold text-xl tracking-tight hidden lg:block transition-colors text-text-main">
+                תומר פרידמן
+            </span>
+        </a>
+
+        <!-- Mobile Menu Toggle -->
+        <div class="md:hidden flex items-center">
+            <button id="mobile-menu-btn" class="focus:outline-none transition-colors text-text-main">
+                <i data-lucide="menu" class="w-7 h-7"></i>
+            </button>
+        </div>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-1 lg:gap-2" id="desktop-nav">
+            <a href="#hero"
+                class="nav-link relative px-3 py-2 text-sm font-medium transition-all duration-300 rounded-full text-text-muted hover:text-text-main hover:bg-white/5 active-nav">ראשי
+                <div
+                    class="active-indicator absolute -bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-energy rounded-full shadow-[0_0_10px_rgba(255,77,0,0.8)] hidden">
+                </div></a>
+            <a href="#about"
+                class="nav-link relative px-3 py-2 text-sm font-medium transition-all duration-300 rounded-full text-text-muted hover:text-text-main hover:bg-white/5">אודות
+                <div
+                    class="active-indicator absolute -bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-energy rounded-full shadow-[0_0_10px_rgba(255,77,0,0.8)] hidden">
+                </div></a>
+            <a href="#tracks"
+                class="nav-link relative px-3 py-2 text-sm font-medium transition-all duration-300 rounded-full text-text-muted hover:text-text-main hover:bg-white/5">מסלולים
+                <div
+                    class="active-indicator absolute -bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-energy rounded-full shadow-[0_0_10px_rgba(255,77,0,0.8)] hidden">
+                </div></a>
+            <a href="#app"
+                class="nav-link relative px-3 py-2 text-sm font-medium transition-all duration-300 rounded-full text-text-muted hover:text-text-main hover:bg-white/5">אפליקציה
+                <div
+                    class="active-indicator absolute -bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-energy rounded-full shadow-[0_0_10px_rgba(255,77,0,0.8)] hidden">
+                </div></a>
+            <a href="#process"
+                class="nav-link relative px-3 py-2 text-sm font-medium transition-all duration-300 rounded-full text-text-muted hover:text-text-main hover:bg-white/5">תהליך
+                <div
+                    class="active-indicator absolute -bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-energy rounded-full shadow-[0_0_10px_rgba(255,77,0,0.8)] hidden">
+                </div></a>
+            <a href="#testimonials"
+                class="nav-link relative px-3 py-2 text-sm font-medium transition-all duration-300 rounded-full text-text-muted hover:text-text-main hover:bg-white/5">המלצות
+                <div
+                    class="active-indicator absolute -bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-energy rounded-full shadow-[0_0_10px_rgba(255,77,0,0.8)] hidden">
+                </div></a>
+            <a href="#courses"
+                class="nav-link relative px-3 py-2 text-sm font-medium transition-all duration-300 rounded-full text-text-muted hover:text-text-main hover:bg-white/5">הרצאות
+                <div
+                    class="active-indicator absolute -bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-energy rounded-full shadow-[0_0_10px_rgba(255,77,0,0.8)] hidden">
+                </div></a>
+            <a href="#faq"
+                class="nav-link relative px-3 py-2 text-sm font-medium transition-all duration-300 rounded-full text-text-muted hover:text-text-main hover:bg-white/5">שאלות
+                <div
+                    class="active-indicator absolute -bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-energy rounded-full shadow-[0_0_10px_rgba(255,77,0,0.8)] hidden">
+                </div></a>
+        </nav>
+
+        <!-- CTA Button (Desktop) -->
+        <div class="hidden md:block">
+            <a href="#contact"
+                class="bg-energy text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-energy-light transition-colors shadow-[0_0_15px_rgba(255,77,0,0.4)]">
+                צור קשר
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu"
+    class="fixed inset-0 z-30 bg-bg/95 backdrop-blur-xl pt-32 px-6 flex-col gap-6 md:hidden hidden opacity-0 transition-opacity duration-300">
+    <a href="#hero"
+        class="mobile-nav-link text-3xl font-heading font-bold border-b border-white/5 pb-4 transition-colors text-text-main hover:text-energy">ראשי</a>
+    <a href="#about"
+        class="mobile-nav-link text-3xl font-heading font-bold border-b border-white/5 pb-4 transition-colors text-text-main hover:text-energy">אודות</a>
+    <a href="#tracks"
+        class="mobile-nav-link text-3xl font-heading font-bold border-b border-white/5 pb-4 transition-colors text-text-main hover:text-energy">מסלולים</a>
+    <a href="#app"
+        class="mobile-nav-link text-3xl font-heading font-bold border-b border-white/5 pb-4 transition-colors text-text-main hover:text-energy">אפליקציה</a>
+    <a href="#process"
+        class="mobile-nav-link text-3xl font-heading font-bold border-b border-white/5 pb-4 transition-colors text-text-main hover:text-energy">תהליך</a>
+    <a href="#testimonials"
+        class="mobile-nav-link text-3xl font-heading font-bold border-b border-white/5 pb-4 transition-colors text-text-main hover:text-energy">המלצות</a>
+    <a href="#courses"
+        class="mobile-nav-link text-3xl font-heading font-bold border-b border-white/5 pb-4 transition-colors text-text-main hover:text-energy">הרצאות</a>
+    <a href="#faq"
+        class="mobile-nav-link text-3xl font-heading font-bold border-b border-white/5 pb-4 transition-colors text-text-main hover:text-energy">שאלות</a>
+    <a href="#contact"
+        class="mobile-nav-link mt-4 bg-energy text-white py-4 rounded-xl font-bold text-center text-xl shadow-[0_10px_30px_-10px_rgba(255,77,0,0.4)]">צור
+        קשר</a>
+</div>
+<section id="hero"
+    class="relative min-h-[100dvh] w-full flex items-center pb-0 px-6 md:px-16 lg:px-24 overflow-hidden bg-bg group"
+    onmousemove="handleHeroMouseMove(event)">
+    <!-- Dynamic Glow based on mouse position -->
+    <div id="hero-mouse-glow"
+        class="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100 z-0"
+        style="background: radial-gradient(600px circle at 0px 0px, rgba(255, 77, 0, 0.15), transparent 80%);"></div>
+
+    <!-- Dramatic Background Image -->
+    <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop"
+            alt="Gym and Training Environment"
+            class="absolute inset-0 w-full h-full object-cover mix-blend-screen opacity-20 scale-105"
+            referrerpolicy="no-referrer" />
+        <div class="absolute inset-0 bg-gradient-to-r from-bg via-bg/90 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-bg/50"></div>
+    </div>
+
+    <!-- Floating Dumbbells Background (CSS instead of Framer) -->
+    <div
+        class="absolute top-40 right-10 md:right-32 w-32 h-32 md:w-48 md:h-48 opacity-10 blur-[2px] pointer-events-none z-0 hover-float">
+        <img src="https://images.unsplash.com/photo-1586401100295-7a8096fd231a?q=80&w=400&auto=format&fit=crop"
+            alt="Dumbbell" class="w-full h-full object-cover rounded-full mix-blend-luminosity" />
+    </div>
+    <div
+        class="absolute bottom-40 left-10 md:left-32 w-40 h-40 md:w-56 md:h-56 opacity-5 blur-[3px] pointer-events-none z-0 hover-float-reverse delay-1000">
+        <img src="https://images.unsplash.com/photo-1586401100295-7a8096fd231a?q=80&w=400&auto=format&fit=crop"
+            alt="Dumbbell" class="w-full h-full object-cover rounded-full mix-blend-luminosity" />
+    </div>
+
+    <!-- Glow Blob -->
+    <div class="glow-blob top-1/4 -right-20 bg-energy opacity-50"></div>
+
+    <!-- Tomer's Image Spot -->
+    <div
+        class="anim-fade-up anim-delay-2000 absolute bottom-0 left-0 lg:left-10 w-[350px] lg:w-[500px] h-[600px] lg:h-[800px] hidden md:block z-10 pointer-events-none fade-target">
+        <div class="w-full h-full relative overflow-hidden flex items-end justify-center">
+            <!-- Tomer's Image -->
+            <div class="absolute inset-0 bg-[url('https://storage.googleapis.com/aistudio-user-content/0000000000000000/2026-03-07T05:51:19-08:00/68/image-0.png')] bg-contain bg-bottom bg-no-repeat opacity-100"
+                style="-webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);"></div>
+            <div
+                class="absolute bottom-10 px-6 py-3 bg-[rgba(15,15,15,0.7)] rounded-2xl border border-white/10 backdrop-blur-md flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-full flex items-center justify-center border border-energy/50 overflow-hidden shadow-[0_0_15px_rgba(255,77,0,0.3)]">
+                    <img src="https://storage.googleapis.com/aistudio-user-content/0000000000000000/2026-03-07T05:51:19-08:00/68/image-1.png"
+                        alt="TF Logo" class="w-full h-full object-cover" referrerpolicy="no-referrer" />
+                </div>
+                <div>
+                    <p class="text-white font-bold text-sm">תומר פרידמן</p>
+                    <p class="text-text-muted text-xs">תזונאי קליני (B.Sc) וספורט</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div
+        class="relative z-10 max-w-6xl mx-auto w-full flex flex-col items-start gap-6 mt-20 anim-stagger-parent fade-target">
+
+        <div class="overflow-hidden pb-2">
+            <div
+                class="anim-stagger-child inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-white/10 bg-[rgba(15,15,15,0.7)]">
+                <div class="relative flex h-2 w-2">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-energy opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-energy"></span>
+                </div>
+                <span class="text-xs font-bold tracking-widest text-text-muted uppercase">מבוסס מדע. מוכח בשטח.</span>
+            </div>
+        </div>
+
+        <div class="overflow-hidden pb-2">
+            <p class="anim-stagger-child text-xl md:text-2xl text-energy font-medium tracking-tight">
+                דיאטות לא עובדות. משמעת עצמית נגמרת.
+            </p>
+        </div>
+
+        <div class="overflow-hidden pb-4">
+            <h1
+                class="anim-stagger-child text-6xl md:text-[7rem] font-heading font-black text-white leading-[1.1] tracking-tighter">
+                השינוי <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-energy to-orange-400">האחרון</span><br />
+                שתצטרך לעשות.
+            </h1>
+        </div>
+
+        <div class="overflow-hidden pb-2">
+            <p
+                class="anim-stagger-child text-lg md:text-xl text-text-muted max-w-2xl leading-relaxed mt-4 border-r-2 border-energy pr-6">
+                אני לא מחלק תפריטים גנריים. אני בונה מערכת תזונה ואימונים מותאמת אישית, שמשתלבת בחיים שלך. לא להפך.
+            </p>
+        </div>
+
+        <div class="overflow-hidden pt-6 pb-4">
+            <div class="anim-stagger-child flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                <a href="#pathfinder"
+                    class="w-full sm:w-auto group bg-energy text-white px-8 py-4 rounded-full font-bold text-lg shadow-[0_10px_30px_-10px_rgba(255,77,0,0.6)] flex items-center justify-center hover:bg-energy-light transition-colors">
+                    <span>התאם לי תוכנית</span>
+                    <i data-lucide="arrow-left"
+                        class="w-5 h-5 mr-3 transition-transform group-hover:-translate-x-1"></i>
+                </a>
+                <a href="#contact"
+                    class="w-full sm:w-auto group bg-white/5 backdrop-blur-md border border-white/15 text-text-main px-8 py-4 rounded-full font-semibold text-lg hover:bg-white/10 transition-colors flex items-center justify-center">
+                    <i data-lucide="phone-call" class="w-5 h-5 ml-3 text-energy"></i>
+                    <span>תיאום שיחת ייעוץ</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div
+        class="anim-fade-up anim-delay-3000 absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 fade-target opacity-50">
+        <div class="w-[1px] h-16 bg-white/20 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1/2 bg-energy animate-[slideDown_1.5s_linear_infinite]"></div>
+        </div>
+    </div>
+</section>
+
+<style>
+    @keyframes hoverFloat {
+
+        0%,
+        100% {
+            transform: translateY(0) rotate(0);
+        }
+
+        50% {
+            transform: translateY(-30px) rotate(15deg);
+        }
+    }
+
+    @keyframes hoverFloatReverse {
+
+        0%,
+        100% {
+            transform: translateY(0) rotate(0);
+        }
+
+        50% {
+            transform: translateY(40px) rotate(-20deg);
+        }
+    }
+
+    .hover-float {
+        animation: hoverFloat 6s ease-in-out infinite;
+    }
+
+    .hover-float-reverse {
+        animation: hoverFloatReverse 8s ease-in-out infinite;
+    }
+
+    @keyframes slideDown {
+        0% {
+            transform: translateY(-100%);
+        }
+
+        100% {
+            transform: translateY(200%);
+        }
+    }
+
+    .anim-delay-2000 {
+        transition-delay: 1.5s;
+    }
+
+    .anim-delay-3000 {
+        transition-delay: 2.5s;
+    }
+</style>
+<section class="relative py-20 px-6 md:px-16 lg:px-24 bg-bg overflow-hidden z-20">
+    <div class="max-w-5xl mx-auto relative">
+        <div class="relative anim-fade-up fade-target" style="transition-duration: 0.8s;">
+            <!-- Glowing border effect -->
+            <div
+                class="absolute -inset-1 rounded-2xl md:rounded-[2rem] bg-gradient-to-b from-energy to-orange-600 opacity-30 blur-xl">
+            </div>
+
+            <div
+                class="relative rounded-2xl md:rounded-[2rem] border-2 border-white/10 bg-surface overflow-hidden aspect-video shadow-2xl flex items-center justify-center group cursor-pointer">
+                <!-- Fallback / Placeholder Image -->
+                <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1200&auto=format&fit=crop"
+                    alt="Tomer Fridman VSL"
+                    class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-700"
+                    referrerpolicy="no-referrer" />
+                <div class="absolute inset-0 bg-gradient-to-t from-bg to-transparent"></div>
+
+                <!-- Play Button -->
+                <div
+                    class="relative z-10 w-20 h-20 md:w-24 md:h-24 rounded-full bg-energy/90 flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-500 shadow-[0_0_40px_rgba(255,77,0,0.5)]">
+                    <i data-lucide="play" class="w-8 h-8 md:w-10 md:h-10 text-white ml-2" fill="currentColor"></i>
+                </div>
+
+                <!-- VSL Text Overlay -->
+                <div class="absolute bottom-6 md:bottom-10 left-0 right-0 text-center z-10">
+                    <p class="font-heading font-bold text-xl md:text-3xl text-white tracking-widest drop-shadow-md">
+                        צפה כיצד השיטה עובדת
+                    </p>
+                    <p class="text-white/60 text-sm mt-2">4:32 דקות שעשויות לשנות את חייך</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="ingredients" class="py-32 px-6 md:px-16 lg:px-24 bg-bg relative">
+    <div class="max-w-7xl mx-auto anim-stagger-parent fade-target">
+        <div class="mb-20">
+            <div class="overflow-hidden pb-4">
+                <h2
+                    class="anim-stagger-child text-5xl md:text-7xl font-heading font-bold text-text-main tracking-tighter">
+                    מרכיבים <span class="text-energy italic font-light">להצלחה</span>
+                </h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+
+            <!-- Item 1 -->
+            <div
+                class="anim-fade-up delay-100 fade-target glass-panel rounded-[2.5rem] p-10 md:p-14 relative overflow-hidden group">
+                <div
+                    class="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 transition-colors duration-700 bg-energy/5 group-hover:bg-energy/10">
+                </div>
+
+                <div class="relative z-10 flex flex-col h-full">
+                    <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-8 bg-energy/10 text-energy">
+                        <i data-lucide="dna" class="w-8 h-8" stroke-width="1.5"></i>
+                    </div>
+
+                    <h3 class="text-3xl font-heading font-bold mb-6 text-text-main">תזונה מבוססת מדע</h3>
+
+                    <p class="text-lg text-text-muted leading-relaxed font-medium mb-8">
+                        בלי טרנדים חולפים. כל כיוון מתבסס על מחקרים עדכניים, ומופק לפי הפיזיולוגיה והמטרות שלך בעזרת
+                        הניסיון הקליני העשיר של תומר (B.Sc במדעי התזונה).
+                    </p>
+
+                    <ul class="space-y-4 mt-auto">
+                        <li
+                            class="flex items-start gap-3 text-text-main/80 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-energy shrink-0 mt-0.5"></i>
+                            <span>אבחון פיזיולוגי מקיף</span>
+                        </li>
+                        <li
+                            class="flex items-start gap-3 text-text-main/80 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-energy shrink-0 mt-0.5"></i>
+                            <span>התאמה למערכות העיכול</span>
+                        </li>
+                        <li
+                            class="flex items-start gap-3 text-text-main/80 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-energy shrink-0 mt-0.5"></i>
+                            <span>בניית תפריט דינמי</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div
+                class="anim-fade-up delay-300 fade-target glass-panel rounded-[2.5rem] p-10 md:p-14 relative overflow-hidden group md:mt-24">
+                <div
+                    class="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 transition-colors duration-700 bg-white/5 group-hover:bg-white/10">
+                </div>
+
+                <div class="relative z-10 flex flex-col h-full">
+                    <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-8 bg-white/10 text-white">
+                        <i data-lucide="dumbbell" class="w-8 h-8" stroke-width="1.5"></i>
+                    </div>
+
+                    <h3 class="text-3xl font-heading font-bold mb-6 text-text-main">אימונים יעילים</h3>
+
+                    <p class="text-lg text-text-muted leading-relaxed font-medium mb-8">
+                        שיטות אימון שמתמקדות בתוצאות אמיתיות. מקסימום אפקטיביות במינימום זמן, בהתאמה אישית לרמת המתאמן
+                        ולמטרות שלו (חיטוב, מסה, או כוח).
+                    </p>
+
+                    <ul class="space-y-4 mt-auto">
+                        <li
+                            class="flex items-start gap-3 text-text-main/80 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-white shrink-0 mt-0.5"></i>
+                            <span>בקרת עומסים מדורגת (Progressive Overload)</span>
+                        </li>
+                        <li
+                            class="flex items-start gap-3 text-text-main/80 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-white shrink-0 mt-0.5"></i>
+                            <span>שיפור טכניקה וביצועים מדויקים</span>
+                        </li>
+                        <li
+                            class="flex items-start gap-3 text-text-main/80 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-white shrink-0 mt-0.5"></i>
+                            <span>תכנית אימונים חכמה באפליקציה</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section id="process" class="py-32 px-6 md:px-16 lg:px-24 bg-bg relative overflow-hidden">
+    <!-- Floating Dumbbells Background (CSS) -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+        <div class="absolute top-20 left-[5%] opacity-10 hover-float-reverse">
+            <i data-lucide="dumbbell" class="w-16 h-16 text-white"></i>
+        </div>
+        <div class="absolute bottom-40 right-[10%] opacity-10 hover-float delay-1000">
+            <i data-lucide="dumbbell" class="w-20 h-20 text-energy"></i>
+        </div>
+    </div>
+
+    <div class="max-w-5xl mx-auto relative z-10">
+        <div class="text-center mb-24 anim-fade-up fade-target">
+            <div class="text-energy font-bold tracking-widest uppercase text-sm mb-4">תהליך העבודה איתי</div>
+            <h2 class="text-4xl md:text-6xl font-heading font-black text-text-main">
+                מובנה, שקוף <span class="text-energy">וממוקד-תוצאות</span>
+            </h2>
+            <p class="text-text-muted mt-6 max-w-2xl mx-auto text-lg">
+                השותפות שלנו מתחילה באפיון אסטרטגי וממשיכה באופטימיזציה מתמדת. אני לא מספק פתרון 'זבנג וגמרנו', אלא
+                אנחנו בונים יחד הרגלים לכל החיים.
+            </p>
+        </div>
+
+        <div class="relative" id="process-container">
+            <!-- Background Line -->
+            <div class="absolute left-1/2 top-0 bottom-0 w-[2px] bg-white/5 -translate-x-1/2 hidden md:block"></div>
+
+            <!-- Animated Fill Line (controlled via JS based on scroll) -->
+            <div id="process-line-fill"
+                class="absolute left-1/2 top-0 w-[2px] bg-gradient-to-b from-energy to-orange-500 -translate-x-1/2 hidden md:block origin-top shadow-[0_0_15px_rgba(255,77,0,0.8)]"
+                style="height: 0%;"></div>
+
+            <div class="flex flex-col gap-24 relative z-10">
+
+                <!-- Step 1 -->
+                <div class="process-step flex flex-col md:flex-row items-center gap-8 md:gap-16">
+                    <!-- Content Box -->
+                    <div class="anim-fade-scroll flex-1 w-full md:w-1/2 md:text-left fade-target"
+                        data-direction="-40px">
+                        <div
+                            class="bg-[rgba(15,15,15,0.7)] backdrop-blur-md p-8 rounded-3xl border border-white/5 hover:border-energy/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,77,0,0.15)] group">
+                            <h3
+                                class="text-2xl font-heading font-bold text-text-main mb-3 group-hover:text-energy transition-colors">
+                                אפיון והגדרת מטרות</h3>
+                            <p class="text-text-muted mb-4">פגישת היכרות מעמיקה להבנת אורח החיים שלך, היסטוריה רפואית,
+                                העדפות תזונתיות והגדרת יעדים ריאליים ומדויקים.</p>
+                            <p class="text-sm text-energy/80 italic">"בשלב זה אני אוסף את כל המידע הדרוש כדי לתפור את
+                                החליפה המושלמת עבורך."</p>
+                        </div>
+                    </div>
+
+                    <!-- Center Node -->
+                    <div
+                        class="hidden md:flex relative z-10 items-center justify-center w-16 h-16 shrink-0 process-node">
+                        <div
+                            class="absolute inset-0 rounded-full bg-energy/20 blur-md node-glow opacity-20 transition-opacity duration-300">
+                        </div>
+                        <div
+                            class="relative flex items-center justify-center w-14 h-14 rounded-full bg-bg text-white font-bold text-xl z-10 transition-all duration-300 border-2 border-white/10 node-circle">
+                            <span>1</span>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Node (Static) -->
+                    <div
+                        class="md:hidden relative z-10 flex items-center justify-center w-12 h-12 rounded-full bg-bg border-2 border-energy text-energy font-bold text-xl shrink-0 shadow-[0_0_20px_rgba(255,77,0,0.3)]">
+                        1
+                    </div>
+
+                    <!-- Empty Space for alignment -->
+                    <div class="hidden md:block flex-1 w-1/2"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="process-step flex flex-col md:flex-row-reverse items-center gap-8 md:gap-16">
+                    <div class="anim-fade-scroll flex-1 w-full md:w-1/2 md:text-right fade-target"
+                        data-direction="40px">
+                        <div
+                            class="bg-[rgba(15,15,15,0.7)] backdrop-blur-md p-8 rounded-3xl border border-white/5 hover:border-energy/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,77,0,0.15)] group">
+                            <h3
+                                class="text-2xl font-heading font-bold text-text-main mb-3 group-hover:text-energy transition-colors">
+                                התאמה מדעית</h3>
+                            <p class="text-text-muted mb-4">בניית תפריט תזונה ותכנית אימונים מבוססי מחקר, המותאמים אישית
+                                לפיזיולוגיה שלך ולסדר היום שלך.</p>
+                            <p class="text-sm text-energy/80 italic">"התאמה אישית היא המפתח להתמדה. התכנית צריכה להתאים
+                                לחיים שלך, לא להפך."</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="hidden md:flex relative z-10 items-center justify-center w-16 h-16 shrink-0 process-node">
+                        <div
+                            class="absolute inset-0 rounded-full bg-energy/20 blur-md node-glow opacity-20 transition-opacity duration-300">
+                        </div>
+                        <div
+                            class="relative flex items-center justify-center w-14 h-14 rounded-full bg-bg text-white font-bold text-xl z-10 transition-all duration-300 border-2 border-white/10 node-circle">
+                            <span>2</span>
+                        </div>
+                    </div>
+
+                    <div
+                        class="md:hidden relative z-10 flex items-center justify-center w-12 h-12 rounded-full bg-bg border-2 border-energy text-energy font-bold text-xl shrink-0 shadow-[0_0_20px_rgba(255,77,0,0.3)]">
+                        2
+                    </div>
+
+                    <div class="hidden md:block flex-1 w-1/2"></div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="process-step flex flex-col md:flex-row items-center gap-8 md:gap-16">
+                    <div class="anim-fade-scroll flex-1 w-full md:w-1/2 md:text-left fade-target"
+                        data-direction="-40px">
+                        <div
+                            class="bg-[rgba(15,15,15,0.7)] backdrop-blur-md p-8 rounded-3xl border border-white/5 hover:border-energy/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,77,0,0.15)] group">
+                            <h3
+                                class="text-2xl font-heading font-bold text-text-main mb-3 group-hover:text-energy transition-colors">
+                                מעקב ואופטימיזציה</h3>
+                            <p class="text-text-muted mb-4">ליווי צמוד, שקילות, מדידות ועדכוני תכנית שוטפים כדי להבטיח
+                                התקדמות מתמדת ושבירת תקיעויות.</p>
+                            <p class="text-sm text-energy/80 italic">"הגוף משתנה ומסתגל, ולכן התכנית חייבת להיות דינמית
+                                ולהשתנות יחד איתו."</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="hidden md:flex relative z-10 items-center justify-center w-16 h-16 shrink-0 process-node">
+                        <div
+                            class="absolute inset-0 rounded-full bg-energy/20 blur-md node-glow opacity-20 transition-opacity duration-300">
+                        </div>
+                        <div
+                            class="relative flex items-center justify-center w-14 h-14 rounded-full bg-bg text-white font-bold text-xl z-10 transition-all duration-300 border-2 border-white/10 node-circle">
+                            <span>3</span>
+                        </div>
+                    </div>
+
+                    <div
+                        class="md:hidden relative z-10 flex items-center justify-center w-12 h-12 rounded-full bg-bg border-2 border-energy text-energy font-bold text-xl shrink-0 shadow-[0_0_20px_rgba(255,77,0,0.3)]">
+                        3
+                    </div>
+
+                    <div class="hidden md:block flex-1 w-1/2"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .anim-fade-scroll {
+        opacity: 0;
+        transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .anim-fade-scroll.visible {
+        opacity: 1;
+        transform: translateX(0) !important;
+    }
+
+    .node-circle.active {
+        border-color: #FF4D00 !important;
+        box-shadow: 0 0 20px rgba(255, 77, 0, 0.6);
+        color: #FF4D00;
+        transform: scale(1.1);
+    }
+
+    .node-glow.active {
+        opacity: 1 !important;
+    }
+</style>
+<section class="py-24 px-6 md:px-16 lg:px-24 bg-surface relative overflow-hidden border-y border-white/5">
+    <!-- Glow Blobs -->
+    <div class="glow-blob top-0 left-0 bg-energy opacity-10"></div>
+    <div class="glow-blob bottom-0 right-0 bg-energy-light opacity-10"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+            <div class="anim-stagger-parent fade-target">
+                <div class="overflow-hidden pb-2">
+                    <div
+                        class="anim-stagger-child inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-energy/30 bg-energy/10 mb-6">
+                        <span class="relative flex h-2 w-2">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-energy opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-energy"></span>
+                        </span>
+                        <span class="text-xs font-bold tracking-widest text-energy uppercase">חינם לחלוטין</span>
+                    </div>
+                </div>
+
+                <div class="overflow-hidden pb-4">
+                    <h2
+                        class="anim-stagger-child text-4xl md:text-6xl font-heading font-black text-text-main mb-6 leading-tight">
+                        קבל גישה חינמית <span class="text-energy">לאפליקציית המעקב שלי</span>
+                    </h2>
+                </div>
+
+                <div class="overflow-hidden pb-2">
+                    <p class="anim-stagger-child text-lg text-text-muted mb-8 leading-relaxed">
+                        לפני שאתה מתחייב לתהליך, קבל ממני את כל הכלים שאתה צריך כדי להתחיל. הירשם עכשיו וקבל גישה
+                        לאפליקציית המעקב שלי ולערכת ההתחלה המלאה.
+                    </p>
+                </div>
+
+                <ul class="space-y-4 mb-10">
+                    <div class="overflow-hidden pb-1">
+                        <li class="anim-stagger-child flex items-center gap-3 text-text-main">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-energy shrink-0"></i>
+                            <span>מעקב אחר משקל ומדדים אישיים</span>
+                        </li>
+                    </div>
+                    <div class="overflow-hidden pb-1">
+                        <li class="anim-stagger-child flex items-center gap-3 text-text-main">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-energy shrink-0"></i>
+                            <span>מחשבון קלוריות ומאקרו מובנה</span>
+                        </li>
+                    </div>
+                    <div class="overflow-hidden pb-1">
+                        <li class="anim-stagger-child flex items-center gap-3 text-text-main">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-energy shrink-0"></i>
+                            <span>גישה למאגר מתכונים בריאים</span>
+                        </li>
+                    </div>
+                    <div class="overflow-hidden pb-1">
+                        <li class="anim-stagger-child flex items-center gap-3 text-text-main">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-energy shrink-0"></i>
+                            <span>מדריך וידאו קצר להתחלה נכונה</span>
+                        </li>
+                    </div>
+                </ul>
+
+                <div class="overflow-hidden pb-2">
+                    <form class="anim-stagger-child flex flex-col sm:flex-row gap-4" onsubmit="event.preventDefault()">
+                        <input type="email" placeholder="הכנס כתובת אימייל"
+                            class="flex-1 bg-bg border border-white/10 rounded-full px-6 py-4 text-text-main focus:outline-none focus:border-energy transition-colors"
+                            required>
+                        <button type="submit"
+                            class="btn-magnetic bg-energy text-white px-8 py-4 rounded-full font-bold shadow-[0_10px_30px_-10px_rgba(255,77,0,0.4)] flex items-center justify-center gap-2 hover:bg-energy-light transition-colors">
+                            <i data-lucide="smartphone" class="w-4 h-4"></i>
+                            <span>קבל גישה לאפליקציה</span>
+                        </button>
+                    </form>
+                </div>
+                <div class="overflow-hidden pb-2">
+                    <p class="anim-stagger-child text-xs text-text-muted mt-4">* פרטי ההתחברות ישלחו אליך למייל באופן
+                        מיידי. ללא ספאם.</p>
+                </div>
+            </div>
+
+            <div class="relative flex justify-center lg:justify-end anim-fade-up fade-target delay-200">
+                <div
+                    class="relative w-full max-w-md aspect-[3/4] glass-panel rounded-3xl border border-white/10 overflow-hidden shadow-2xl flex items-center justify-center group">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-energy/20 to-bg opacity-50 group-hover:opacity-70 transition-opacity duration-500">
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop"
+                        alt="Fitness App Access"
+                        class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60 group-hover:scale-105 transition-transform duration-700"
+                        referrerpolicy="no-referrer" />
+                    <div class="relative z-10 text-center p-8">
+                        <div
+                            class="w-16 h-16 bg-energy text-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                            <i data-lucide="smartphone" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-3xl font-heading font-black text-white mb-2">TF. TRACKER</h3>
+                        <p class="text-energy font-bold tracking-widest uppercase text-sm mb-6">אפליקציית מעקב אישית</p>
+                        <div class="w-12 h-1 bg-white/20 mx-auto rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section id="pathfinder" class="py-24 px-6 md:px-16 lg:px-24 bg-bg relative overflow-hidden">
+    <div class="max-w-3xl mx-auto relative z-10">
+
+        <div id="pf-header" class="text-center mb-12 anim-fade-up fade-target">
+            <h2 class="text-4xl md:text-5xl font-heading font-black text-text-main mb-4">
+                בוא נבין מה באמת <span class="text-energy">מעכב אותך</span>
+            </h2>
+            <p class="text-text-muted text-lg max-w-2xl mx-auto">
+                אבחון תזונתי קצר שיגיד לך בדיוק מה המצב, מה עוצר אותך, ומה הצעד הבא שמתאים לך.
+            </p>
+        </div>
+
+        <div
+            class="glass-panel-dark rounded-3xl border border-white/5 p-8 md:p-12 min-h-[450px] flex flex-col justify-center relative overflow-hidden shadow-2xl anim-fade-up anim-delay-200 fade-target">
+
+            <!-- Progress Bar -->
+            <div id="pf-progress-container" class="absolute top-0 left-0 w-full h-1 bg-white/5 hidden">
+                <div id="pf-progress-bar" class="h-full bg-energy w-0 transition-all duration-300"></div>
+            </div>
+
+            <!-- Intro Step -->
+            <div id="pf-step-intro" class="text-center transition-all duration-500">
+                <div
+                    class="w-20 h-20 bg-energy/10 rounded-full flex items-center justify-center mx-auto mb-8 border border-energy/20">
+                    <i data-lucide="target" class="text-energy w-8 h-8"></i>
+                </div>
+
+                <div class="space-y-4 mb-10 text-right max-w-sm mx-auto">
+                    <div class="flex items-center gap-3 text-text-muted">
+                        <div class="w-2 h-2 rounded-full bg-energy"></div>
+                        <span>5 שאלות קצרות, פחות מדקה</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-text-muted">
+                        <div class="w-2 h-2 rounded-full bg-energy"></div>
+                        <span>תוצאה מותאמת אישית בסוף</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-text-muted">
+                        <div class="w-2 h-2 rounded-full bg-energy"></div>
+                        <span>בלי מכירה, בלי ספאם, בלי שטויות</span>
+                    </div>
+                </div>
+
+                <button onclick="pfStart()"
+                    class="btn-magnetic bg-energy text-white px-10 py-4 rounded-full font-bold shadow-[0_10px_30px_-10px_rgba(255,77,0,0.4)] inline-flex items-center gap-2 text-lg hover:bg-energy-light transition-colors">
+                    <span>בוא נתחיל</span>
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Questions Container -->
+            <div id="pf-step-question"
+                class="w-full max-w-2xl mx-auto hidden opacity-0 transition-opacity duration-300 translate-x-[50px]">
+                <div class="flex justify-between items-center mb-6">
+                    <span id="pf-q-counter" class="text-energy font-bold tracking-widest text-sm">שאלה 1 מתוך 5</span>
+                    <button id="pf-btn-back" onclick="pfBack()"
+                        class="text-text-muted hover:text-white flex items-center text-sm transition-colors hidden">
+                        <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i> חזור
+                    </button>
+                </div>
+
+                <h3 id="pf-q-title" class="text-2xl md:text-3xl font-heading font-bold text-white mb-2"></h3>
+                <p id="pf-q-hint" class="text-text-muted mb-8 text-sm"></p>
+
+                <div id="pf-q-options" class="space-y-3">
+                    <!-- Options injected via JS -->
+                </div>
+            </div>
+
+            <!-- Lead Capture Step -->
+            <div id="pf-step-lead"
+                class="w-full max-w-xl mx-auto hidden opacity-0 transition-opacity duration-300 translate-x-[50px]">
+                <div class="text-center mb-8">
+                    <h3 class="text-3xl font-heading font-bold text-white mb-2">התוצאות שלך מוכנות</h3>
+                    <p class="text-text-muted">השאר פרטים ותקבל את האבחון האישי שלך למייל</p>
+                </div>
+
+                <form id="pf-lead-form" class="space-y-5" onsubmit="pfSubmitLead(event)">
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium text-text-muted">שם מלא</label>
+                        <input required type="text" id="pf-input-name"
+                            class="w-full bg-bg border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-energy transition-colors"
+                            placeholder="השם שלך">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium text-text-muted">טלפון</label>
+                        <input required type="tel" id="pf-input-phone"
+                            class="w-full bg-bg border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-energy transition-colors text-right"
+                            placeholder="050-0000000" dir="ltr">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium text-text-muted">אימייל</label>
+                        <input required type="email" id="pf-input-email"
+                            class="w-full bg-bg border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-energy transition-colors text-right"
+                            placeholder="your@email.com" dir="ltr">
+                    </div>
+
+                    <button type="submit"
+                        class="w-full btn-magnetic bg-energy text-white px-8 py-4 rounded-xl font-bold shadow-[0_10px_30px_-10px_rgba(255,77,0,0.4)] mt-4 hover:bg-energy-light transition-colors">
+                        קבל את התוצאות שלי
+                    </button>
+                    <p class="text-xs text-text-muted/60 text-center mt-4">הפרטים שלך לא יועברו לאף גורם חיצוני. ללא
+                        ספאם.</p>
+                </form>
+            </div>
+
+            <!-- Calculating State -->
+            <div id="pf-step-calc" class="text-center py-12 hidden opacity-0 transition-opacity duration-300">
+                <div class="relative w-20 h-20 mx-auto mb-6">
+                    <div class="absolute inset-0 border-4 border-white/10 rounded-full"></div>
+                    <div class="absolute inset-0 border-4 border-energy rounded-full border-t-transparent animate-spin">
+                    </div>
+                </div>
+                <h3 class="text-2xl font-heading font-bold text-white mb-2">מנתח את התשובות שלך...</h3>
+                <p class="text-text-muted">מתאים את האבחון המדויק עבורך</p>
+            </div>
+
+            <!-- Result Step -->
+            <div id="pf-step-result" class="w-full hidden opacity-0 transition-opacity duration-300 scale-95">
+                <div class="text-center mb-10">
+                    <h3 class="text-3xl md:text-4xl font-heading font-black text-white mb-2">
+                        <span id="pf-res-name">היי</span>, הנה מה שהאבחון מראה
+                    </h3>
+                </div>
+
+                <div id="pf-res-box" class="border rounded-3xl p-8 mb-8 bg-bg relative overflow-hidden">
+                    <div id="pf-res-line" class="absolute top-0 right-0 w-full h-1"></div>
+
+                    <div id="pf-res-badge"
+                        class="inline-block px-4 py-1.5 rounded-full text-sm font-bold tracking-widest mb-6"></div>
+
+                    <h4 id="pf-res-title" class="text-2xl font-bold text-white mb-4 leading-snug"></h4>
+                    <p id="pf-res-desc" class="text-text-muted leading-relaxed mb-8"></p>
+
+                    <ul id="pf-res-points" class="space-y-4">
+                        <!-- Points injected via JS -->
+                    </ul>
+                </div>
+
+                <div class="text-center bg-bg border border-white/5 rounded-3xl p-8">
+                    <div class="text-xl font-bold text-white mb-3">הצעד הבא שלך</div>
+                    <p id="pf-res-cta-text" class="text-text-muted mb-8 max-w-lg mx-auto"></p>
+
+                    <a href="#contact"
+                        class="btn-magnetic bg-energy text-white px-10 py-4 rounded-full font-bold shadow-[0_10px_30px_-10px_rgba(255,77,0,0.4)] inline-block w-full sm:w-auto text-lg mb-4 hover:bg-energy-light transition-colors">
+                        לקבוע שיחת ייעוץ איתי
+                    </a>
+
+                    <p class="text-sm text-energy font-medium mb-2">
+                        👩⚕️ דמי רצינות: 200₪ בלבד
+                    </p>
+                    <p class="text-xs text-text-muted/80 mb-6">שיחה של 10-15 דקות. בלי התחייבות. רק בדיקה אם זה מתאים.
+                    </p>
+
+                    <div class="pt-6 border-t border-white/5">
+                        <div class="text-sm text-text-muted/60 mb-1">לא מתאים לך עכשיו?</div>
+                        <div class="text-sm text-energy font-medium">📱 אני אחזור אליך בוואטסאפ תוך 24 שעות עם הצעות
+                            נוספות</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section id="tracks" class="py-32 px-6 md:px-16 lg:px-24 bg-bg relative border-y border-white/5 overflow-hidden">
+    <!-- Floating Dumbbells Background -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+        <div class="absolute top-40 right-[5%] opacity-5 hover-float delay-500 text-white">
+            <i data-lucide="dumbbell" class="w-24 h-24"></i>
+        </div>
+        <div class="absolute bottom-20 left-[10%] opacity-5 hover-float-reverse delay-1000 text-energy">
+            <i data-lucide="dumbbell" class="w-32 h-32"></i>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10 anim-stagger-parent fade-target">
+        <div class="mb-16 text-center">
+            <div class="overflow-hidden pb-4">
+                <h2
+                    class="anim-stagger-child text-5xl md:text-7xl font-heading font-black text-white tracking-tighter mb-6">
+                    מסלולי <span class="text-energy italic font-light">ייעוץ</span>
+                </h2>
+            </div>
+            <div class="overflow-hidden pb-2">
+                <p class="anim-stagger-child text-xl text-text-muted max-w-2xl mx-auto">
+                    המסע שלך מתחיל כאן. בחר את המסלול המתאים ביותר לאורח החיים שלך.
+                </p>
+            </div>
+        </div>
+
+        <!-- Tab Switcher -->
+        <div class="flex justify-center mb-16">
+            <div class="inline-flex bg-surface p-1.5 rounded-full border border-white/5 shadow-inner">
+                <button onclick="switchTrackTab('online')" id="tab-btn-online"
+                    class="track-tab-btn relative flex items-center gap-2 px-8 py-3.5 rounded-full text-sm font-bold transition-all duration-300 text-white bg-energy">
+                    <span class="relative z-10 flex items-center gap-2">
+                        <i data-lucide="smartphone" class="w-4 h-4"></i> אונליין
+                    </span>
+                </button>
+                <button onclick="switchTrackTab('frontal')" id="tab-btn-frontal"
+                    class="track-tab-btn relative flex items-center gap-2 px-8 py-3.5 rounded-full text-sm font-bold transition-all duration-300 text-text-muted hover:text-white bg-transparent">
+                    <span class="relative z-10 flex items-center gap-2">
+                        <i data-lucide="users" class="w-4 h-4"></i> פרונטלי
+                    </span>
+                </button>
+                <button onclick="switchTrackTab('phone')" id="tab-btn-phone"
+                    class="track-tab-btn relative flex items-center gap-2 px-8 py-3.5 rounded-full text-sm font-bold transition-all duration-300 text-text-muted hover:text-white bg-transparent">
+                    <span class="relative z-10 flex items-center gap-2">
+                        <i data-lucide="phone-call" class="w-4 h-4"></i> ייעוץ טלפוני
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="min-h-[400px]">
+            <!-- ONLINE TAB -->
+            <div id="tab-content-online"
+                class="track-pane transition-all duration-500 ease-in-out opacity-100 max-w-5xl mx-auto block">
+                <div class="space-y-12">
+                    <div
+                        class="relative rounded-3xl overflow-hidden aspect-[16/9] md:aspect-[21/9] border border-white/10">
+                        <img src="https://storage.googleapis.com/aistudio-user-content/0000000000000000/2026-03-07T05:51:19-08:00/68/image-6.png"
+                            alt="Online Tracking" class="w-full h-full object-cover object-top"
+                            referrerpolicy="no-referrer">
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-transparent"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="online-cards-container">
+                        <!-- Filled by JS based on SITE_DATA -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- FRONTAL TAB -->
+            <div id="tab-content-frontal"
+                class="track-pane transition-all duration-500 ease-in-out opacity-0 max-w-5xl mx-auto hidden">
+                <div class="space-y-12">
+                    <div
+                        class="relative rounded-3xl overflow-hidden aspect-[16/9] md:aspect-[21/9] border border-white/10">
+                        <img src="https://storage.googleapis.com/aistudio-user-content/0000000000000000/2026-03-07T05:51:19-08:00/68/image-4.png"
+                            alt="Frontal Measurements" class="w-full h-full object-cover object-top"
+                            referrerpolicy="no-referrer">
+                        <div class="absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-transparent"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="frontal-cards-container">
+                        <!-- Filled by JS -->
+                    </div>
+
+                    <!-- Follow-up Note -->
+                    <div
+                        class="bg-blue-900/20 border border-blue-500/30 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 text-blue-200/80">
+                        <i data-lucide="info" class="text-blue-400 shrink-0 w-6 h-6"></i>
+                        <div class="flex-grow">
+                            <p class="text-sm leading-relaxed">
+                                <strong class="text-blue-300 font-bold">שימו לב:</strong> הפגישה הראשונה ארוכה מן הרגיל.
+                                שאר פגישות המעקב אורכות כ-5 דקות ומתקיימות בטווח של כ-3 שבועות אחת מהשנייה למעקב
+                                אידיאלי.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- MFU Note -->
+                    <div class="bg-surface border border-white/5 rounded-2xl p-6 flex items-center justify-between">
+                        <div>
+                            <h4 class="text-white font-bold mb-1">מדידות מעקב (MFU)</h4>
+                            <p class="text-sm text-text-muted">לשמירה על תוצאות - מיועד רק למי שעבר תהליך פרונטלי מלא.
+                            </p>
+                        </div>
+                        <div class="text-left">
+                            <div class="text-xs text-text-muted mb-1">4 קפיצות מדידה</div>
+                            <div class="text-xl font-bold text-white">₪ 520</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHONE TAB -->
+            <div id="tab-content-phone"
+                class="track-pane transition-all duration-500 ease-in-out opacity-0 max-w-2xl mx-auto hidden">
+                <div
+                    class="bg-surface-hover border border-white/10 p-12 md:p-16 rounded-[3rem] text-center relative overflow-hidden shadow-[0_0_50px_rgba(255,77,0,0.05)]">
+                    <div
+                        class="absolute top-0 right-0 w-full h-full bg-gradient-to-b from-energy/5 to-transparent pointer-events-none">
+                    </div>
+                    <i data-lucide="phone-call" class="w-16 h-16 text-energy mx-auto mb-8" stroke-width="1.5"></i>
+                    <h3 class="text-4xl font-heading font-black mb-6 text-white">ייעוץ טלפוני</h3>
+                    <p class="text-lg text-text-muted mb-12 leading-relaxed max-w-lg mx-auto">
+                        שיחת זום או טלפון ממוקדת. מתאים למי שצריך הכוונה נקודתית, תשובות לשאלות ספציפיות מקצועיות, ודיוק
+                        של התהליך הקיים שלו ללא התחייבות.
+                    </p>
+
+                    <div class="flex flex-col gap-4 max-w-md mx-auto relative z-10">
+                        <div
+                            class="flex justify-between items-center w-full bg-surface border border-white/5 rounded-2xl p-6">
+                            <span class="text-sm text-text-muted">10 דקות ראשונות</span>
+                            <span class="text-3xl font-black text-energy">₪ 200</span>
+                        </div>
+                        <div
+                            class="flex justify-between items-center w-full bg-surface border border-white/5 rounded-2xl p-6">
+                            <span class="text-sm text-text-muted">כל דקה נוספת</span>
+                            <span class="font-bold text-xl text-white">₪ 20</span>
+                        </div>
+
+                        <a href="#contact"
+                            class="w-full mt-4 py-4 rounded-full font-bold transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF4D00] to-[#CC3D00] text-white hover:shadow-[0_0_30px_rgba(255,77,0,0.4)] hover:scale-[1.02]">
+                            תיאום שיחה
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section id="app" class="py-32 px-6 md:px-16 lg:px-24 bg-surface relative overflow-hidden border-y border-white/5">
+    <!-- Background Elements -->
+    <div class="absolute inset-0 opacity-10"
+        style="background-image: radial-gradient(#FF4D00 1px, transparent 1px); background-size: 40px 40px;"></div>
+    <div class="glow-blob top-1/2 right-0 bg-energy/30 translate-x-1/3 -translate-y-1/2"></div>
+
+    <!-- Floating Dumbbells Background -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+        <div
+            class="absolute top-20 right-10 md:right-32 w-32 h-32 md:w-48 md:h-48 opacity-10 blur-[2px] z-0 hover-float">
+            <img src="https://images.unsplash.com/photo-1586401100295-7a8096fd231a?q=80&w=400&auto=format&fit=crop"
+                alt="Dumbbell" class="w-full h-full object-cover rounded-full mix-blend-luminosity">
+        </div>
+        <div
+            class="absolute bottom-20 left-10 md:left-32 w-40 h-40 md:w-56 md:h-56 opacity-5 blur-[3px] z-0 hover-float-reverse delay-1000">
+            <img src="https://images.unsplash.com/photo-1586401100295-7a8096fd231a?q=80&w=400&auto=format&fit=crop"
+                alt="Dumbbell" class="w-full h-full object-cover rounded-full mix-blend-luminosity">
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+        <div class="text-center max-w-3xl mx-auto mb-20 anim-fade-up fade-target">
+            <span class="inline-block font-heading text-sm font-bold tracking-widest text-energy uppercase mb-4">
+                TF TRACKER
+            </span>
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-heading font-black text-white mb-6">
+                שליטה מלאה <span class="text-energy">בכף היד</span> שלך
+            </h2>
+            <p class="text-lg text-text-muted mb-8">
+                התפריט, תכנית האימונים והמעקב - הכל באפליקציה אחת מקיפה. נוצרה במיוחד לתלמידים שלי. משתמשים חינמיים
+                מקבלים גישה למחשבונים, מעקב משקל בסיסי וספריית מאמרים.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#contact"
+                    class="btn-magnetic bg-energy text-white px-8 py-4 rounded-full font-bold shadow-[0_10px_30px_-10px_rgba(255,77,0,0.4)] flex items-center gap-2 hover:bg-energy-light transition-colors">
+                    <span>הורד חינם (iOS)</span>
+                    <i data-lucide="apple" class="w-5 h-5"></i>
+                </a>
+                <a href="#contact"
+                    class="px-8 py-4 rounded-full border border-white/20 hover:bg-white/5 transition-colors font-medium text-white flex items-center justify-center gap-2">
+                    <span>הורד חינם (Android)</span>
+                    <i data-lucide="smartphone" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+            <!-- Text Content -->
+            <div class="anim-stagger-parent fade-target">
+                <div class="space-y-8">
+                    <div class="anim-stagger-child flex gap-6 group">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 text-energy group-hover:bg-energy group-hover:text-white transition-colors duration-300">
+                            <i data-lucide="utensils" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-text-main mb-2">תפריט תזונה דינמי</h3>
+                            <p class="text-text-muted leading-relaxed">גישה נוחה לתפריט היומי, תחליפי מזון אפשריים בכל
+                                ארוחה ומתכונים בלחיצת כפתור (פרימיום).</p>
+                        </div>
+                    </div>
+
+                    <div class="anim-stagger-child flex gap-6 group">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 text-energy group-hover:bg-energy group-hover:text-white transition-colors duration-300">
+                            <i data-lucide="dumbbell" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-text-main mb-2">תכנית אימונים חכמה</h3>
+                            <p class="text-text-muted leading-relaxed">מעקב אחר משקלים במכון, סרטוני הדרכה מדויקים לכל
+                                תרגיל ורישום התקדמות מלא (פרימיום).</p>
+                        </div>
+                    </div>
+
+                    <div class="anim-stagger-child flex gap-6 group">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 text-white group-hover:bg-white group-hover:text-bg transition-colors duration-300">
+                            <i data-lucide="line-chart" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-text-main mb-2">מעקב מדדים</h3>
+                            <p class="text-text-muted leading-relaxed">גרפים ברורים המציגים את הירידה במשקל, אחוזי
+                                השומן, היקפים (חינם למשתמשים בסיסיים).</p>
+                        </div>
+                    </div>
+
+                    <div class="anim-stagger-child flex gap-6 group">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 text-white group-hover:bg-white group-hover:text-bg transition-colors duration-300">
+                            <i data-lucide="message-circle" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-text-main mb-2">קשר ישיר</h3>
+                            <p class="text-text-muted leading-relaxed">צ'אט מובנה לשאלות, התייעצויות ועדכונים שוטפים
+                                בזמן אמת איתי (פרימיום).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subscription Info -->
+                <div class="anim-stagger-child mt-12 p-6 rounded-2xl bg-energy/5 border border-energy/20">
+                    <h4 class="font-bold text-white mb-4">מסלולי מנוי לאפליקציה:</h4>
+                    <ul class="space-y-3 text-sm text-text-muted">
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-energy shrink-0 mt-0.5"></i>
+                            <span><strong class="text-white">לקוחות ליווי (אונליין/פרונטלי):</strong> גישה מלאה לכל
+                                החיים (Lifetime Access).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-energy shrink-0 mt-0.5"></i>
+                            <span><strong class="text-white">אחרי שיחת ייעוץ:</strong> 3 חודשים ראשונים בחינם למסלול
+                                הפרימיום.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-energy shrink-0 mt-0.5"></i>
+                            <span><strong class="text-white">משתמשים חדשים:</strong> חודש ראשון בחינם, לאחר מכן מנוי
+                                חודשי מתחדש.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Phone Mockup -->
+            <div class="anim-fade-up fade-target relative flex justify-center lg:justify-end perspective-1000"
+                style="transition-duration: 1s;">
+                <div
+                    class="relative w-[300px] md:w-[350px] h-[600px] md:h-[700px] rounded-[3rem] border-[8px] border-[#222] bg-[#0a0a0a] shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_0_0_2px_rgba(255,255,255,0.1)] overflow-hidden transform-style-3d hover:rotate-y-[10deg] transition-transform duration-700">
+                    <!-- Dynamic Island / Notch -->
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-[#222] rounded-b-3xl z-20"></div>
+
+                    <!-- Phone Screen Content (Simulated) -->
+                    <div class="absolute inset-0 bg-[#0a0a0a] flex flex-col pt-8">
+                        <!-- Status Bar -->
+                        <div
+                            class="h-8 w-full flex justify-between items-center px-6 text-[11px] text-white font-medium z-10">
+                            <span>9:41</span>
+                            <div class="flex gap-1.5 items-center">
+                                <div class="w-3 h-3 rounded-full border border-white/80"></div>
+                                <div class="w-3 h-3 rounded-full bg-white/80"></div>
+                                <div class="w-4 h-2.5 rounded-sm bg-white/80"></div>
+                            </div>
+                        </div>
+
+                        <!-- App Header -->
+                        <div class="px-6 py-4 mt-2">
+                            <div class="flex justify-between items-center mb-4">
+                                <div>
+                                    <div class="text-energy text-xs font-bold mb-1 tracking-wider uppercase">TF Tracker
+                                    </div>
+                                    <div class="text-2xl font-bold text-white">שלום, תומר</div>
+                                </div>
+                                <div
+                                    class="w-10 h-10 rounded-full bg-energy/20 border border-energy/50 flex items-center justify-center text-energy font-bold">
+                                    TF
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- App Body -->
+                        <div class="flex-1 px-6 pb-6 space-y-6 overflow-y-auto custom-scrollbar">
+
+                            <!-- Daily Progress Ring (Simulated) -->
+                            <div
+                                class="bg-[#111] rounded-3xl p-6 border border-white/5 flex items-center justify-between">
+                                <div>
+                                    <div class="text-sm text-white/60 mb-1">קלוריות נותרות</div>
+                                    <div class="text-3xl font-black text-white">1,240</div>
+                                    <div class="text-xs text-energy mt-1">מתוך 2,500 קק"ל</div>
+                                </div>
+                                <div
+                                    class="w-20 h-20 rounded-full border-4 border-[#222] border-t-energy border-r-energy flex items-center justify-center transform -rotate-45">
+                                    <div class="transform rotate-45 text-center">
+                                        <div class="text-lg font-bold text-white">50%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Macros Card -->
+                            <div class="bg-[#111] rounded-3xl p-5 border border-white/5">
+                                <div class="text-sm font-bold text-white mb-4">יעדים יומיים</div>
+                                <div class="flex justify-between items-end">
+                                    <div class="text-center">
+                                        <div class="text-energy font-bold text-xl mb-1">180g</div>
+                                        <div class="w-12 h-1.5 bg-[#222] rounded-full overflow-hidden mx-auto mb-1">
+                                            <div class="w-3/4 h-full bg-energy rounded-full"></div>
+                                        </div>
+                                        <div class="text-[10px] text-white/40">חלבון</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-white font-bold text-xl mb-1">250g</div>
+                                        <div class="w-12 h-1.5 bg-[#222] rounded-full overflow-hidden mx-auto mb-1">
+                                            <div class="w-1/2 h-full bg-white rounded-full"></div>
+                                        </div>
+                                        <div class="text-[10px] text-white/40">פחמימה</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-white/60 font-bold text-xl mb-1">70g</div>
+                                        <div class="w-12 h-1.5 bg-[#222] rounded-full overflow-hidden mx-auto mb-1">
+                                            <div class="w-1/4 h-full bg-white/40 rounded-full"></div>
+                                        </div>
+                                        <div class="text-[10px] text-white/40">שומן</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Next Meal -->
+                            <div
+                                class="bg-gradient-to-br from-energy/20 to-transparent rounded-3xl p-5 border border-energy/20">
+                                <div class="flex justify-between items-center mb-3">
+                                    <div class="text-sm font-bold text-white">ארוחה הבאה</div>
+                                    <div class="text-xs text-energy bg-energy/10 px-2 py-1 rounded-md">14:00</div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-xl bg-[#222] flex items-center justify-center text-white/50">
+                                        <i data-lucide="utensils" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-white text-sm">חזה עוף ואורז</div>
+                                        <div class="text-xs text-white/60">450 קק"ל • 40g חלבון</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Workout -->
+                            <div class="bg-[#111] rounded-3xl p-5 border border-white/5">
+                                <div class="flex justify-between items-center mb-3">
+                                    <div class="text-sm font-bold text-white">אימון מתוכנן</div>
+                                    <div class="text-xs text-white/40 bg-[#222] px-2 py-1 rounded-md">18:30</div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-xl bg-energy/10 flex items-center justify-center text-energy">
+                                        <i data-lucide="dumbbell" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-white text-sm">אימון כוח - פלג גוף עליון</div>
+                                        <div class="text-xs text-white/60">60 דקות • 5 תרגילים</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Bottom Navigation -->
+                        <div
+                            class="h-20 bg-[#0a0a0a]/90 backdrop-blur-md border-t border-white/10 flex justify-around items-center px-6 pb-4 pt-2 z-10">
+                            <div class="flex flex-col items-center gap-1 text-energy">
+                                <div class="p-2 bg-energy/10 rounded-xl"><i data-lucide="utensils" class="w-5 h-5"></i>
+                                </div>
+                                <div class="text-[10px] font-medium">תזונה</div>
+                            </div>
+                            <div class="flex flex-col items-center gap-1 text-white/40">
+                                <div class="p-2"><i data-lucide="dumbbell" class="w-5 h-5"></i></div>
+                                <div class="text-[10px] font-medium">אימון</div>
+                            </div>
+                            <div class="flex flex-col items-center gap-1 text-white/40">
+                                <div class="p-2"><i data-lucide="line-chart" class="w-5 h-5"></i></div>
+                                <div class="text-[10px] font-medium">מדדים</div>
+                            </div>
+                            <div class="flex flex-col items-center gap-1 text-white/40">
+                                <div class="p-2"><i data-lucide="message-circle" class="w-5 h-5"></i></div>
+                                <div class="text-[10px] font-medium">צ'אט</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Decorative elements around phone -->
+                <div class="absolute -z-10 top-20 -left-10 w-32 h-32 bg-energy/20 rounded-full blur-2xl"></div>
+                <div class="absolute -z-10 bottom-20 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section id="courses" class="py-32 px-6 md:px-16 lg:px-24 bg-bg relative">
+    <div class="max-w-7xl mx-auto">
+        <div class="mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8 anim-stagger-parent fade-target">
+            <div>
+                <div class="overflow-hidden pb-4">
+                    <h2
+                        class="anim-stagger-child text-5xl md:text-7xl font-heading font-bold text-text-main tracking-tighter mb-4">
+                        קורסים <span class="text-energy italic font-light">והרצאות</span>
+                    </h2>
+                </div>
+                <div class="overflow-hidden pb-2">
+                    <p class="anim-stagger-child text-xl text-text-muted max-w-lg">
+                        ידע מבוסס מחקר, מונגש בצורה פרקטית וברורה.
+                    </p>
+                </div>
+            </div>
+
+            <div class="overflow-hidden pb-2">
+                <button
+                    class="anim-stagger-child text-energy font-medium border-b border-energy pb-1 hover:text-energy-light transition-colors self-start md:self-auto">
+                    צפה בכל הקורסים
+                </button>
+            </div>
+        </div>
+
+        <div class="flex flex-col relative" id="courses-list-container" onmousemove="handleCoursesMouseMove(event)">
+            <!-- Cursor Follower -->
+            <div id="course-cursor-follower" class="cursor-follower"
+                style="transform: translate(-9999px, -9999px); background-image: none;"></div>
+
+            <!-- Handled by JS in scripts.html using SITE_DATA -->
+        </div>
+    </div>
+</section>
+<section id="testimonials" class="py-32 px-6 md:px-16 lg:px-24 bg-bg relative overflow-hidden">
+    <!-- Background Elements -->
+    <div class="glow-blob top-1/2 left-0 bg-energy/50 -translate-x-1/2 -translate-y-1/2"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+        <div class="mb-20 text-center anim-fade-up fade-target">
+            <h2 class="text-5xl md:text-7xl font-heading font-bold text-text-main tracking-tighter mb-6">
+                סיפורי <span class="text-glow-animate italic font-light">הצלחה</span>
+            </h2>
+            <p class="text-xl text-text-muted max-w-2xl mx-auto">
+                התוצאות מדברות בעד עצמן. הצטרפו למאות מתאמנים שכבר עשו את השינוי.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 anim-stagger-parent fade-target"
+            id="testimonials-grid-container">
+            <!-- Testimonials injected via JS -->
+        </div>
+
+        <!-- Tomer's Guarantee / Image Placeholder -->
+        <div
+            class="mt-24 glass-panel-dark border-energy/20 rounded-[3rem] p-8 md:p-12 flex flex-col md:flex-row items-center gap-10 relative overflow-hidden anim-fade-up delay-300 fade-target">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-energy/10 rounded-full blur-3xl"></div>
+
+            <!-- Image Placeholder -->
+            <div
+                class="w-48 h-48 md:w-56 md:h-56 shrink-0 rounded-full border-4 border-energy/30 overflow-hidden relative bg-bg shadow-[0_0_30px_rgba(255,77,0,0.2)]">
+                <div
+                    class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=400&auto=format&fit=crop')] bg-cover bg-top opacity-50 mix-blend-luminosity">
+                </div>
+                <span
+                    class="absolute inset-0 flex items-center justify-center text-center text-sm font-bold text-white/60 uppercase tracking-widest">Tomer's
+                    Face</span>
+            </div>
+
+            <div class="relative z-10 text-center md:text-right">
+                <h3 class="text-3xl md:text-4xl font-heading font-black text-white mb-4">המחוייבות שלי <span
+                        class="text-energy">אליך</span></h3>
+                <p class="text-lg md:text-xl text-text-muted leading-relaxed mb-6">
+                    "אני לא מחפש לקוחות לכל החיים. אני מחפש אנשים שרוצים ללמוד איך לאכול נכון, להתאמן חכם, ולשמור על
+                    התוצאות לתמיד. ההצלחה שלך היא תעודת הזהות שלי, והפנים שלי עומדות מאחורי כל תפריט ותוכנית."
+                </p>
+                <div class="text-2xl font-heading font-bold text-white">תומר פרידמן.</div>
+                <div class="text-energy text-sm font-bold tracking-widest uppercase mt-1">תזונאי קליני וספורט</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<section id="about" class="py-32 px-6 md:px-16 lg:px-24 bg-bg relative border-y border-white/5">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col lg:flex-row gap-16 items-center">
+            <!-- Image Side -->
+            <div class="w-full lg:w-1/2 relative">
+                <div
+                    class="absolute inset-0 bg-energy/20 blur-3xl rounded-full transform -translate-x-1/2 -translate-y-1/2">
+                </div>
+                <div
+                    class="relative rounded-[2rem] overflow-hidden border border-white/10 aspect-[4/5] anim-fade-up fade-target">
+                    <img src="https://storage.googleapis.com/aistudio-user-content/0000000000000000/2026-03-07T05:51:19-08:00/68/image-2.png"
+                        alt="תומר פרידמן - תזונאי קליני וספורט"
+                        class="w-full h-full object-cover transition-all duration-1000" referrerpolicy="no-referrer" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-bg to-transparent"></div>
+
+                    <!-- Floating Insurance Badge -->
+                    <div
+                        class="absolute bottom-8 right-8 bg-surface/90 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-2xl flex items-center gap-4 animate-pulse">
+                        <div
+                            class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center text-green-500 shrink-0">
+                            <i data-lucide="shield-check" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm text-white">החזרים מחברות הביטוח</p>
+                            <p class="text-xs text-text-muted">כפוף לפוליסה האישית</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text Side -->
+            <div class="w-full lg:w-1/2 anim-fade-scroll fade-target" data-direction="40px">
+                <span
+                    class="inline-block font-heading text-sm font-bold tracking-widest text-energy uppercase mb-4">הסיפור
+                    מאחורי השיטה</span>
+                <h2 class="font-heading font-black text-4xl md:text-5xl lg:text-6xl mb-8 text-white">
+                    נעים מאוד, <span class="text-energy">תומר פרידמן</span>
+                </h2>
+
+                <div class="space-y-6 text-lg text-text-muted mb-10 leading-relaxed">
+                    <p>
+                        אני תזונאי קליני וספורט, ואני מלווה מאות מתאמנים, ספורטאים ואנשים שפשוט רוצים להיראות ולהרגיש
+                        הכי טוב שאפשר.
+                        לא תמצאו אצלי פתרונות קסם. אין לי תפריט הדפסה שתלוי על המקרר.
+                    </p>
+                    <p>
+                        <strong class="text-white font-medium">הגישה שלי שונה.</strong> אני מאמין בדיוק מדעי, בהתאמה
+                        אישית מלאה ובבניית הרגלים לטווח ארוך.
+                        דיאטות מהירות נכשלות כי הן דורשות ממך להילחם בעצמך כל יום מחדש. המערכת שאנחנו בונים ביחד מנצחת
+                        את משחק המשמעת העצמית.
+                    </p>
+                    <p>
+                        בתור עצמאי שעובד לבד, <span class="text-white border-b border-energy pb-0.5">אתם לא עוברים דרך
+                            מערך מתמחים.</span> אני זה שמנתח את הנתונים, אני זה שעונה בטלפון, ואני זה שבודק כל מדד וכל
+                        שקילה.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-8">
+                    <div class="flex flex-col">
+                        <span class="font-heading font-black text-4xl text-white">500+</span>
+                        <span class="text-sm text-text-muted uppercase tracking-wider">לקוחות מרוצים</span>
+                    </div>
+                    <div class="w-px h-12 bg-white/10"></div>
+                    <div class="flex flex-col">
+                        <span class="font-heading font-black text-4xl text-white">B.Sc</span>
+                        <span class="text-sm text-text-muted uppercase tracking-wider">מדעי התזונה</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="seminars" class="py-32 px-6 md:px-16 lg:px-24 bg-bg relative border-y border-white/5">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-surface border border-energy/20 rounded-[2rem] p-10 md:p-16 relative overflow-hidden text-center shadow-[0_0_50px_rgba(255,77,0,0.05)] anim-fade-up fade-target"
+            style="transition-duration: 0.8s;">
+            <div
+                class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80')] opacity-5 bg-cover bg-center mix-blend-luminosity">
+            </div>
+
+            <div class="relative z-10 max-w-2xl mx-auto">
+                <span
+                    class="inline-block px-4 py-1.5 rounded-full bg-energy/20 text-energy text-xs font-bold mb-6 tracking-widest uppercase border border-energy/30">בקרוב</span>
+                <h3 class="font-heading font-black text-3xl md:text-5xl mb-6 text-white">
+                    סדנאות פרונטליות - <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-energy to-orange-400">סדרת
+                        2026</span>
+                </h3>
+                <p class="text-text-muted text-lg mb-10 leading-relaxed">
+                    בקרוב נפתח את ההרשמה לסדרה ייחודית של הרצאות וסדנאות עומק בנושאי תזונת ספורט, תוספים, וגמישות
+                    תזונתית ברחבי הארץ.
+                    מספר המקומות מוגבל. הירשמו לרשימת ההמתנה כדי לקבל עדכון ראשונים והטבת הרשמה.
+                </p>
+
+                <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onsubmit="event.preventDefault()">
+                    <input type="email" placeholder="האימייל שלך" required
+                        class="flex-grow bg-bg border border-white/20 rounded-full px-6 py-4 text-white focus:border-energy focus:ring-1 focus:ring-energy transition-all outline-none" />
+                    <button type="submit"
+                        class="btn-magnetic bg-energy text-white py-4 px-8 rounded-full font-bold whitespace-nowrap shadow-[0_10px_30px_-10px_rgba(255,77,0,0.4)] hover:bg-energy-light transition-colors">
+                        הצטרף לרשימה
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="faq" class="py-32 px-6 md:px-16 lg:px-24 bg-bg relative">
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-16 anim-stagger-parent fade-target">
+            <div class="overflow-hidden pb-4">
+                <h2
+                    class="anim-stagger-child text-5xl md:text-7xl font-heading font-bold text-text-main tracking-tighter mb-4">
+                    שאלות <span class="text-energy italic font-light">נפוצות</span>
+                </h2>
+            </div>
+            <div class="overflow-hidden pb-2">
+                <p class="anim-stagger-child text-xl text-text-muted">
+                    כל מה שרציתם לדעת על התהליך.
+                </p>
+            </div>
+        </div>
+
+        <div class="space-y-4 anim-stagger-parent fade-target" id="faq-container">
+            <!-- Handled by JS -->
+        </div>
+    </div>
+</section>
+<footer id="contact"
+    class="bg-surface text-text-main rounded-t-[4rem] pt-32 pb-12 px-6 md:px-16 lg:px-24 relative overflow-hidden mt-[-2rem] z-20 border-t border-white/5">
+    <!-- Background Noise -->
+    <div class="absolute inset-0 opacity-5 pointer-events-none mix-blend-overlay"
+        style="background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E')">
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-32">
+
+            <!-- Form Section -->
+            <div class="anim-stagger-parent fade-target">
+                <div class="overflow-hidden pb-4">
+                    <h2 class="anim-stagger-child text-5xl md:text-7xl font-heading font-bold mb-12 tracking-tighter">
+                        מוכן לצאת <span class="text-energy italic font-light">לדרך?</span>
+                    </h2>
+                </div>
+
+                <form class="anim-stagger-child flex flex-col gap-8" onsubmit="event.preventDefault()">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="relative group">
+                            <input type="text" id="contact-name" required
+                                class="w-full bg-transparent border-b border-white/10 py-3 text-white focus:outline-none focus:border-energy transition-colors peer"
+                                placeholder=" ">
+                            <label for="contact-name"
+                                class="absolute right-0 top-3 text-white/50 transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-energy peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">שם
+                                מלא</label>
+                        </div>
+                        <div class="relative group">
+                            <input type="tel" id="contact-phone" required
+                                class="w-full bg-transparent border-b border-white/10 py-3 text-white focus:outline-none focus:border-energy transition-colors peer"
+                                placeholder=" " dir="ltr">
+                            <label for="contact-phone"
+                                class="absolute right-0 top-3 text-white/50 transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-energy peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">טלפון</label>
+                        </div>
+                    </div>
+
+                    <div class="relative group">
+                        <input type="email" id="contact-email" required
+                            class="w-full bg-transparent border-b border-white/10 py-3 text-white focus:outline-none focus:border-energy transition-colors peer"
+                            placeholder=" " dir="ltr">
+                        <label for="contact-email"
+                            class="absolute right-0 top-3 text-white/50 transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-energy peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">אימייל</label>
+                    </div>
+
+                    <div class="relative group">
+                        <input type="text" id="contact-subject"
+                            class="w-full bg-transparent border-b border-white/10 py-3 text-white focus:outline-none focus:border-energy transition-colors peer"
+                            placeholder=" ">
+                        <label for="contact-subject"
+                            class="absolute right-0 top-3 text-white/50 transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-energy peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">נושא
+                            הפנייה</label>
+                    </div>
+
+                    <div class="relative group mt-4">
+                        <textarea id="contact-message" rows="4"
+                            class="w-full bg-transparent border-b border-white/10 py-3 text-white focus:outline-none focus:border-energy transition-colors peer resize-none"
+                            placeholder=" "></textarea>
+                        <label for="contact-message"
+                            class="absolute right-0 top-3 text-white/50 transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-energy peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">הודעה</label>
+                    </div>
+
+                    <button
+                        class="btn-magnetic mt-8 bg-energy text-white py-4 px-8 rounded-full font-bold text-lg w-full md:w-auto self-start hover:bg-energy-light transition-colors shadow-[0_10px_30px_-10px_rgba(255,77,0,0.4)]"
+                        type="submit">
+                        שלח הודעה
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Details -->
+            <div class="flex flex-col justify-center lg:pl-12 anim-fade-up fade-target delay-200">
+                <div class="glass-panel rounded-3xl p-10 flex flex-col gap-8">
+                    <div class="flex items-start gap-6">
+                        <div
+                            class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 text-energy border border-white/10">
+                            <i data-lucide="mail" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white/60 text-sm mb-1">אימייל</h4>
+                            <a href="mailto:tf.nutritionist@gmail.com"
+                                class="text-xl font-medium hover:text-energy transition-colors" dir="ltr">
+                                tf.nutritionist@gmail.com
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-6">
+                        <div
+                            class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 text-energy border border-white/10">
+                            <i data-lucide="phone" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white/60 text-sm mb-1">ווטסאפ / טלפון</h4>
+                            <a href="tel:+972546699574" class="text-xl font-medium hover:text-energy transition-colors"
+                                dir="ltr">
+                                054-669-9574
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-6">
+                        <div
+                            class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 text-energy border border-white/10">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white/60 text-sm mb-1">שעות פעילות</h4>
+                            <p class="text-xl font-medium">
+                                א׳-ה׳ 10:00 - 19:00
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="w-16 h-16 rounded-full overflow-hidden shadow-[0_0_15px_rgba(255,77,0,0.3)]">
+                <img src="https://storage.googleapis.com/aistudio-user-content/0000000000000000/2026-03-07T05:51:19-08:00/68/image-1.png"
+                    alt="TF Logo" class="w-full h-full object-cover" referrerpolicy="no-referrer">
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="https://www.instagram.com/tommy_fridman/" target="_blank" rel="noopener noreferrer"
+                    class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-bg transition-all hover:shadow-[0_0_15px_rgba(255,255,255,0.5)]">
+                    <i data-lucide="instagram" class="w-4 h-4"></i>
+                </a>
+                <a href="https://www.facebook.com/people/%D7%AA%D7%95%D7%9E%D7%A8-%D7%A4%D7%A8%D7%99%D7%93%D7%9E%D7%9F-%D7%AA%D7%96%D7%95%D7%A0%D7%90%D7%99-%D7%A7%D7%9C%D7%99%D7%A0%D7%99-%D7%95%D7%A1%D7%A4%D7%95%D7%A8%D7%98-%D7%95%D7%9E%D7%90%D7%9E%D7%9F-%D7%9B%D7%95%D7%A9%D7%A8/100047997926036/"
+                    target="_blank" rel="noopener noreferrer"
+                    class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-bg transition-all hover:shadow-[0_0_15px_rgba(255,255,255,0.5)]">
+                    <i data-lucide="facebook" class="w-4 h-4"></i>
+                </a>
+                <a href="https://www.youtube.com/channel/UCSvq2JfGK-oEXk5TGPC_nDA" target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-bg transition-all hover:shadow-[0_0_15px_rgba(255,255,255,0.5)]">
+                    <i data-lucide="youtube" class="w-4 h-4"></i>
+                </a>
+                <a href="https://api.whatsapp.com/send?phone=972546699574" target="_blank" rel="noopener noreferrer"
+                    class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#25D366] hover:border-[#25D366] hover:text-white transition-all hover:shadow-[0_0_15px_rgba(37,211,102,0.5)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />
+                        <path
+                            d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1" />
+                    </svg>
+                </a>
+                <a href="https://www.linkedin.com/in/tomer-fridman-a5101694/" target="_blank" rel="noopener noreferrer"
+                    class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#0077b5] hover:border-[#0077b5] hover:text-white transition-all hover:shadow-[0_0_15px_rgba(0,119,181,0.5)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                        <rect width="4" height="12" x="2" y="9" />
+                        <circle cx="4" cy="4" r="2" />
+                    </svg>
+                </a>
+            </div>
+
+            <div class="text-white/40 text-sm">
+                <span id="current-year"></span> תומר פרידמן. כל הזכויות שמורות.
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Lead Magnet Popup -->
+<div id="lead-magnet-popup"
+    class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 hidden opacity-0 transition-opacity duration-300">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeLeadMagnet()"></div>
+
+    <!-- Modal Content -->
+    <div class="relative w-full max-w-lg bg-bg border border-white/10 rounded-3xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300"
+        id="lead-magnet-content">
+        <!-- Close Button -->
+        <button onclick="closeLeadMagnet()"
+            class="absolute top-4 right-4 z-10 p-2 bg-black/20 hover:bg-black/40 rounded-full text-white/70 hover:text-white transition-colors">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Header Image/Gradient -->
+        <div
+            class="h-32 bg-gradient-to-br from-energy to-orange-600 relative overflow-hidden flex items-center justify-center">
+            <div
+                class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop')] mix-blend-overlay opacity-30 bg-cover bg-center">
+            </div>
+            <i data-lucide="gift" class="w-12 h-12 text-white relative z-10"></i>
+        </div>
+
+        <div class="p-8 relative">
+            <!-- Form View -->
+            <div id="lead-magnet-form-view">
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-heading font-bold text-white mb-2">
+                        המדריך המלא ליציאה ממעגל הדיאטות
+                    </h3>
+                    <p class="text-text-muted text-sm">
+                        קבל בחינם את השיטה שעזרה למאות מתאמנים להגיע לתוצאות ולשמור עליהן לתמיד, בלי לסבול.
+                    </p>
+                </div>
+
+                <form onsubmit="submitLeadMagnet(event)" class="space-y-4">
+                    <div>
+                        <input required type="text" id="lm-name"
+                            class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-energy transition-colors"
+                            placeholder="השם שלך" />
+                    </div>
+                    <div>
+                        <input required type="email" id="lm-email"
+                            class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-energy transition-colors text-right"
+                            placeholder="your@email.com" dir="ltr" />
+                    </div>
+
+                    <button type="submit"
+                        class="w-full btn-magnetic bg-energy text-white px-8 py-4 rounded-xl font-bold shadow-[0_10px_30px_-10px_rgba(255,77,0,0.4)] flex items-center justify-center gap-2 hover:bg-energy-light transition-colors">
+                        <i data-lucide="download" class="w-5 h-5"></i>
+                        <span>שלח לי את המדריך עכשיו</span>
+                    </button>
+                    <p class="text-xs text-text-muted/50 text-center mt-3">
+                        אני שונא ספאם בדיוק כמוך. הפרטים שלך בטוחים אצלי.
+                    </p>
+                </form>
+            </div>
+
+            <!-- Success View -->
+            <div id="lead-magnet-success-view" class="hidden text-center py-8">
+                <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="check-circle-2" class="w-8 h-8 text-green-500"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">מעולה!</h3>
+                <p class="text-text-muted">
+                    המדריך בדרך למייל שלך. בדוק גם בתיקיית קידומי מכירות או ספאם.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Download Popup -->
+<div id="download-popup"
+    class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 hidden opacity-0 transition-opacity duration-300">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeDownloadPopup()"></div>
+
+    <!-- Modal Content -->
+    <div class="relative w-full max-w-lg bg-bg border border-white/10 rounded-3xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300"
+        id="download-popup-content">
+        <button onclick="closeDownloadPopup()"
+            class="absolute top-4 right-4 z-10 p-2 bg-black/20 hover:bg-black/40 rounded-full text-white/70 hover:text-white transition-colors">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <div
+            class="h-32 bg-gradient-to-br from-energy to-orange-600 relative overflow-hidden flex items-center justify-center">
+            <div
+                class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop')] mix-blend-overlay opacity-30 bg-cover bg-center">
+            </div>
+            <i data-lucide="file-text" class="w-12 h-12 text-white relative z-10"></i>
+        </div>
+
+        <div class="p-8 relative">
+            <!-- Form View -->
+            <div id="download-form-view">
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-heading font-bold text-white mb-2">
+                        קבלת גישה ל: <span id="download-resource-name">הקובץ</span>
+                    </h3>
+                    <p class="text-text-muted text-sm">
+                        השאר פרטים והקובץ יישלח אליך למייל באופן מיידי.
+                    </p>
+                </div>
+
+                <form onsubmit="submitDownloadPopup(event)" class="space-y-4">
+                    <div>
+                        <input required type="text" id="dl-name"
+                            class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-energy transition-colors"
+                            placeholder="שם פרטי" />
+                    </div>
+                    <div>
+                        <input required type="email" id="dl-email"
+                            class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-energy transition-colors text-right"
+                            placeholder="your@email.com" dir="ltr" />
+                    </div>
+
+                    <button type="submit"
+                        class="w-full btn-magnetic bg-energy text-white px-8 py-4 rounded-xl font-bold shadow-[0_10px_30px_-10px_rgba(255,77,0,0.4)] flex items-center justify-center gap-2 hover:bg-energy-light transition-colors">
+                        <i data-lucide="download" class="w-5 h-5"></i>
+                        <span>שלח לי את הקובץ</span>
+                    </button>
+                    <p class="text-xs text-text-muted/50 text-center mt-3">
+                        אני שונא ספאם בדיוק כמוך. הפרטים שלך בטוחים אצלי.
+                    </p>
+                </form>
+            </div>
+
+            <!-- Success View -->
+            <div id="download-success-view" class="hidden text-center py-8">
+                <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="check-circle-2" class="w-8 h-8 text-green-500"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">נשלח בהצלחה!</h3>
+                <p class="text-text-muted">
+                    הקובץ בדרך למייל שלך. בדוק גם בתיקיית קידומי מכירות או ספאם.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- lucide icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+    // --- DATA SECTION from data.ts ---
+    const SITE_DATA = {
+        profile: {
+            name: "תומר פרידמן",
+            title: "תזונאי קליני וספורט",
+            email: "tf.nutritionist@gmail.com",
+            phone: "054-669-9574",
+            phoneInternational: "+972546699574",
+            hours: "א׳-ה׳ 10:00 - 19:00",
+            socials: {
+                instagram: "https://www.instagram.com/tommy_fridman/",
+                youtube: "https://www.youtube.com/channel/UCSvq2JfGK-oEXk5TGPC_nDA",
+                facebook: "https://www.facebook.com/people/%D7%AA%D7%95%D7%9E%D7%A8-%D7%A4%D7%A8%D7%99%D7%93%D7%9E%D7%9F-%D7%AA%D7%96%D7%95%D7%A0%D7%90%D7%99-%D7%A7%D7%9C%D7%99%D7%A0%D7%99-%D7%95%D7%A1%D7%A4%D7%95%D7%A8%D7%98-%D7%95%D7%9E%D7%90%D7%9E%D7%9F-%D7%9B%D7%95%D7%A9%D7%A8/100047997926036/",
+                whatsapp: "https://api.whatsapp.com/send?phone=972546699574",
+                linkedin: "https://www.linkedin.com/in/tomer-fridman-a5101694/%20"
+            }
+        },
+        services: {
+            categories: ["אונליין", "פרונטלי", "ייעוץ טלפוני"],
+            online: [
+                { id: "online-nf", title: "תזונה בלבד (NF)", description: "מעקב חודשי שוטף דרך האתר / המייל", isPopular: false, pricing: [{ period: "1 חודש", price: 1200 }, { period: "3 חודשים", price: 2580 }, { period: "6 חודשים", price: 4200 }] },
+                { id: "online-nt", title: "תזונה ותכנית אימונים (N&T)", description: "מעטפת שלמה להשגת תוצאות מקסימליות משני העולמות", isPopular: true, pricing: [{ period: "1 חודש", price: 1620 }, { period: "3 חודשים", price: 3660 }, { period: "6 חודשים", price: 6480 }] }
+            ],
+            frontal: [
+                { id: "frontal-nf", title: "תזונה בלבד (NF)", description: "מפגש כל 2-3 שבועות בקליניקה", isPopular: false, pricing: [{ period: "4 מפגשים", price: 4200 }, { period: "8 מפגשים", price: 6240 }] },
+                { id: "frontal-nt", title: "תזונה ואימונים (N&T)", description: "המקיף ביותר - לליווי מקצועי צמוד", isPopular: true, pricing: [{ period: "4 מפגשים", price: 5580 }, { period: "8 מפגשים", price: 8580 }] },
+                { id: "frontal-mfu", title: "מדידות מעקב (MFU)", description: "לשמירה על תוצאות - 3/4 דקות פגישה", isPopular: false, pricing: [{ period: "4 קפיצות מדידה", price: 520 }] }
+            ],
+            phone: {
+                title: "ייעוץ טלפוני ממוקד", description: "יש לך שאלות נקודתיות? אפשר לתאם שיחה מראש לייעוץ קצר וקולע ולחסוך זמן יקר.", basePrice: { minutes: 10, price: 200 }, additionalMinutePrice: 20
+            }
+        },
+        courses: [
+            { id: "course-sports-nutrition", title: "תזונת ספורט - בסיס העקרונות במאמץ פיזיולוגי", type: "Masterclass", image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=800", freeValue: "הורד סיכום הרצאה חינם" },
+            { id: "course-supplements", title: "תוספי תזונה אפקטיביים להיפרטרופיה ושיפור ביצועים", type: "Seminar", image: "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?auto=format&fit=crop&q=80&w=800", freeValue: "קבל רשימת תוספים מומלצת" },
+            { id: "course-iifym", title: "גמישות תזונתית - IIFYM (If It Fits Your Macros)", type: "Workshop", image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=800", freeValue: "מחשבון מאקרו חינמי" },
+            { id: "course-myths", title: "מיתוסים בעולם התזונה במאבחן מבוסס ראיות", type: "Lecture", image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&q=80&w=800", freeValue: "מדריך ניפוץ מיתוסים" }
+        ],
+        testimonials: [
+            { id: 1, name: "שלומי א.", text: "התהליך עם תומר שינה לי את החיים. מעבר לתוצאות הפיזיות, למדתי איך לאכול נכון ולהתאמן חכם בלי לסבול.", result: "ירידה של 10 ק״ג" },
+            { id: 2, name: "דנה כ.", text: "תומר מקצועי ברמות הכי גבוהות שיש. התפריט היה מותאם בדיוק לאורח החיים העמוס שלי, והתוצאות לא איחרו לבוא.", result: "חיטוב וירידה באחוזי שומן" },
+            { id: 3, name: "רון ר.", text: "בתור ספורטאי, התזונה היא קריטית. תומר עזר לי לדייק את התזונה לפני ואחרי אימונים, והביצועים שלי השתפרו משמעותית.", result: "שיפור ביצועים" },
+            { id: 4, name: "שירה מ.", text: "הייתי סקפטי בהתחלה, אבל הגישה המדעית של תומר הוכיחה את עצמה. לא עוד דיאטות כסאח, אלא שינוי אמיתי באורח החיים.", result: "ירידה של 15 ק״ג" },
+            { id: 5, name: "איתי ב.", text: "האפליקציה פשוט גאונית! הכל מרוכז במקום אחד, קל לעקוב אחרי התפריט והאימונים, ותומר תמיד זמין לכל שאלה.", result: "עלייה במסת שריר" }
+        ],
+        faq: [
+            { question: "האם התהליך מתאים גם למי שלא מתאמן?", answer: "בהחלט. התזונה היא המפתח העיקרי לשינוי הרכב הגוף והבריאות. גם ללא אימונים, נבנה תפריט שיביא אותך לתוצאות." },
+            { question: "מה קורה אם אני טס לחו״ל או יוצא לחופשה?", answer: "השיטה שלי דוגלת בגמישות. תקבל כלים איך להתמודד עם חופשות, מסעדות ואירועים, כדי שתוכל ליהנות בלי להרוס את ההתקדמות." },
+            { question: "האם אני חייב לאכול מאכלים שאני לא אוהב?", answer: "ממש לא. התפריט נבנה סביב ההעדפות האישיות שלך. אם לא תאהב את האוכל, לא תתמיד בו. אנחנו נמצא את השילוב המנצח עבורך." },
+            { question: "תוך כמה זמן אראה תוצאות?", answer: "זה משתנה מאדם לאדם, אבל רוב הלקוחות שלי מרגישים הבדל באנרגיה כבר בשבוע הראשון, ורואים שינוי ויזואלי תוך 2-4 שבועות." },
+            { question: "האם יש החזרים מקופות החולים?", answer: "כן, בהתאם לפוליסת הביטוח האישית שלך. אני מספק קבלות מוכרות שניתן להגיש לחברות הביטוח ולקופות החולים לקבלת החזר." },
+            { question: "איך עובד מסלול האונליין?", answer: "לאחר שיחת אפיון ומילוי שאלון מקיף, אני בונה עבורך תוכנית תזונה ואימונים. המעקב מתבצע דרך האפליקציה שלי, עם שקילות שבועיות וזמינות מלאה לשאלות." },
+            { question: "האם אפשר לשנות מסלול באמצע התהליך?", answer: "כן, ניתן לעבור ממסלול אונליין לפרונטלי או להפך, בהתאם לזמינות ולצרכים המשתנים שלך." }
+        ]
+    };
+
+    // --- SET CURRENT YEAR ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const yearEl = document.getElementById('current-year');
+        if (yearEl) yearEl.textContent = new Date().getFullYear();
+    });
+
+    // --- INITIALIZE LUCIDE ---
+    lucide.createIcons();
+
+    // --- ANIMATION LOGIC (Framer Motion equivalent) ---
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "-50px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                // Remove stagger class from children so they animate
+                const staggerChildren = entry.target.querySelectorAll('.anim-stagger-child');
+                staggerChildren.forEach((child, index) => {
+                    setTimeout(() => {
+                        child.classList.add('visible');
+                    }, index * 100); // 100ms stagger
+                });
+                // Stop observing once animated
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Collect all elements that need animation
+        const fadeTargets = document.querySelectorAll('.fade-target');
+        fadeTargets.forEach(el => observer.observe(el));
+    });
+
+    // --- NAVIGATION / HEADER LOGIC ---
+    let lastScrollY = window.scrollY;
+    const header = document.getElementById('main-header');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    window.addEventListener('scroll', () => {
+        if (!header) return;
+
+        // Background blur on scroll
+        if (window.scrollY > 20) {
+            header.classList.add('bg-bg/80', 'backdrop-blur-md', 'shadow-lg');
+            header.classList.remove('bg-transparent');
+        } else {
+            header.classList.remove('bg-bg/80', 'backdrop-blur-md', 'shadow-lg');
+            header.classList.add('bg-transparent');
+        }
+
+        // Hide/Show on scroll direction
+        if (window.scrollY > lastScrollY && window.scrollY > 80) {
+            header.style.transform = 'translateY(-100%)';
+        } else {
+            header.style.transform = 'translateY(0)';
+        }
+        lastScrollY = window.scrollY;
+    });
+
+    function toggleMobileMenu() {
+        if (mobileMenu) {
+            mobileMenu.classList.toggle('hidden');
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
+
+            const targetElement = document.querySelector(href);
+            if (targetElement) {
+                e.preventDefault();
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+                if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            }
+        });
+    });
+
+    // --- PATHFINDER LOGIC ---
+    const pathfinderData = [
+        {
+            question: "מה המטרה העיקרית שלך?",
+            key: "goal",
+            options: [
+                { label: "ירידה במשקל וחיטוב", icon: "arrow-down-right" },
+                { label: "עלייה במסת שריר", icon: "arrow-up-right" },
+                { label: "שיפור ביצועים וספורט", icon: "zap" },
+                { label: "בריאות ואיזון כללי", icon: "heart" }
+            ]
+        },
+        {
+            question: "כמה זמן פנוי יש לך לאימונים בשבוע?",
+            key: "time",
+            options: [
+                { label: "פחות משעתיים", icon: "clock-3" },
+                { label: "2-4 שעות", icon: "clock-4" },
+                { label: "4-6 שעות", icon: "clock-8" },
+                { label: "מעל 6 שעות", icon: "clock-12" }
+            ]
+        },
+        {
+            question: "איך היית מגדיר את המשמעת התזונתית שלך?",
+            key: "discipline",
+            options: [
+                { label: "מתקשה להתמיד", icon: "frown" },
+                { label: "טובה אבל נופל לפעמים", icon: "meh" },
+                { label: "מצוינת במסגרת", icon: "smile" },
+                { label: "מחפש גמישות מקסימלית", icon: "rotate-cw" }
+            ]
+        }
+    ];
+
+    let pathfinderStep = 0;
+    let pathfinderAnswers = {};
+    let pathfinderIsComplete = false;
+
+    function renderPathfinder() {
+        const questionsContainer = document.getElementById('pathfinder-questions');
+        const resultContainer = document.getElementById('pathfinder-result');
+        const progressFill = document.getElementById('pathfinder-progress-fill');
+
+        if (!questionsContainer || !resultContainer || !progressFill) return;
+
+        // Update Progress
+        const isComplete = pathfinderStep >= pathfinderData.length;
+        const progress = isComplete ? 100 : (pathfinderStep / pathfinderData.length) * 100;
+        progressFill.style.width = `${progress}%`;
+
+        if (isComplete) {
+            questionsContainer.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+            renderPathfinderResult();
+        } else {
+            questionsContainer.classList.remove('hidden');
+            resultContainer.classList.add('hidden');
+
+            const q = pathfinderData[pathfinderStep];
+            questionsContainer.innerHTML = `
+            <div class="anim-fade-up fade-target visible">
+                <h3 class="text-3xl md:text-4xl font-heading font-bold text-white mb-8">
+                    ${q.question}
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    ${q.options.map((opt, i) => `
+                        <button onclick="handlePathfinderAnswer('${q.key}', '${opt.label}')" class="group relative overflow-hidden glass-panel border border-white/5 rounded-2xl p-6 text-right transition-all hover:-translate-y-1 hover:border-energy/50 hover:shadow-[0_10px_30px_-10px_rgba(255,77,0,0.3)] flex items-center gap-4">
+                            <div class="absolute inset-0 bg-gradient-to-r from-energy/0 to-energy/0 group-hover:from-energy/10 transition-colors duration-500"></div>
+                            <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 text-white group-hover:text-energy group-hover:bg-energy/10 transition-colors relative z-10">
+                                <i data-lucide="${opt.icon}" class="w-6 h-6"></i>
+                            </div>
+                            <span class="text-lg font-bold text-white/80 group-hover:text-white transition-colors relative z-10">
+                                ${opt.label}
+                            </span>
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+            lucide.createIcons(); // Reactivate icons for new DOM HTML
+
+            // Add back-button logic if > 0
+            const backBtnContainer = document.getElementById('pathfinder-back-btn');
+            if (backBtnContainer) {
+                if (pathfinderStep > 0) {
+                    backBtnContainer.innerHTML = `
+                 <button onclick="pathfinderStep--; renderPathfinder()" class="mt-8 text-text-muted hover:text-white transition-colors flex items-center gap-2 mx-auto">
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    <span>חזור לשאלה הקודמת</span>
+                </button>
+                `;
+                    lucide.createIcons();
+                } else {
+                    backBtnContainer.innerHTML = '';
+                }
+            }
+        }
+    }
+
+    function handlePathfinderAnswer(key, value) {
+        pathfinderAnswers[key] = value;
+        pathfinderStep++;
+        renderPathfinder();
+    }
+
+    function resetPathfinder() {
+        pathfinderStep = 0;
+        pathfinderAnswers = {};
+        renderPathfinder();
+    }
+
+    function renderPathfinderResult() {
+        // Generate recommendation logic (Simplified rule engine)
+        let recommendedPlan = "";
+        if (pathfinderAnswers.goal.includes("ספורט")) {
+            recommendedPlan = "online-nt";
+        } else if (pathfinderAnswers.time.includes("פחות")) {
+            recommendedPlan = "online-nf";
+        } else if (pathfinderAnswers.discipline.includes("מתקשה")) {
+            recommendedPlan = "frontal-nt";
+        } else {
+            recommendedPlan = "online-nt";
+        }
+
+        // Find the plan in data
+        let foundPlan = null;
+        let foundPlanCat = "";
+
+        // Look in online
+        foundPlan = SITE_DATA.services.online.find(p => p.id === recommendedPlan);
+        if (foundPlan) foundPlanCat = "מסלול אונליין";
+
+        // Look in frontal
+        if (!foundPlan) {
+            foundPlan = SITE_DATA.services.frontal.find(p => p.id === recommendedPlan);
+            if (foundPlan) foundPlanCat = "מסלול פרונטלי";
+        }
+
+        const resDom = document.getElementById('pathfinder-recommendation');
+        if (resDom && foundPlan) {
+            resDom.innerHTML = `
+            <div class="text-energy font-bold mb-2">${foundPlanCat}</div>
+            <h4 class="text-2xl font-bold text-white mb-2">${foundPlan.title}</h4>
+            <p class="text-text-muted mb-6">${foundPlan.description}</p>
+            <a href="#tracks" onclick="setTimeout(()=>document.querySelector('[data-tab-target=${foundPlanCat === 'מסלול אונליין' ? 0 : 1}]').click(), 100)" class="inline-block bg-white text-bg px-6 py-2 rounded-full font-bold hover:bg-energy hover:text-white transition-colors">
+                צפה בפרטי המסלול
+            </a>
+        `;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (document.getElementById('pathfinder-questions')) {
+            renderPathfinder();
+        }
+    });
+
+    // --- TRACKS (Tabs) LOGIC ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabsContainer = document.getElementById('tracks-tabs-container');
+        const contentContainer = document.getElementById('tracks-content-container');
+
+        if (!tabsContainer || !contentContainer) return;
+
+        let activeTab = 0;
+
+        function renderTracks() {
+            // Render Tabs
+            tabsContainer.innerHTML = SITE_DATA.services.categories.map((cat, idx) => `
+            <button 
+                data-tab-target="${idx}"
+                onclick="setTrackTab(${idx})"
+                class="px-8 py-4 rounded-full font-bold text-lg transition-all relative overflow-hidden group ${activeTab === idx ? 'text-white' : 'text-text-muted hover:text-white'}"
+            >
+                <span class="relative z-10">${cat}</span>
+                ${activeTab === idx ? `<div class="absolute inset-0 bg-energy/20 border border-energy/50 rounded-full z-0"></div>` : `<div class="absolute inset-0 bg-white/5 rounded-full z-0 opacity-0 group-hover:opacity-100 transition-opacity"></div>`}
+            </button>
+        `).join('');
+
+            // Render Content
+            let currentArray = [];
+            if (activeTab === 0) currentArray = SITE_DATA.services.online;
+            else if (activeTab === 1) currentArray = SITE_DATA.services.frontal;
+            else if (activeTab === 2) {
+                const phoneDat = SITE_DATA.services.phone;
+                contentContainer.innerHTML = `
+                <div class="max-w-xl mx-auto glass-panel-dark rounded-[2rem] border border-white/10 p-8 md:p-10 relative overflow-hidden">
+                     <div class="absolute top-0 left-0 w-32 h-32 bg-energy/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
+                     <h3 class="text-3xl font-heading font-bold text-white mb-4 relative z-10">${phoneDat.title}</h3>
+                     <p class="text-text-muted mb-8 relative z-10">${phoneDat.description}</p>
+                     
+                     <div class="bg-surface rounded-2xl p-6 border border-white/5">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-text-muted">עד ${phoneDat.basePrice.minutes} דקות</span>
+                            <span class="text-3xl font-black text-white">${phoneDat.basePrice.price} ₪</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-text-muted">כל דקה נוספת</span>
+                            <span class="text-energy font-bold">${phoneDat.additionalMinutePrice} ₪</span>
+                        </div>
+                     </div>
+                     
+                     <button onclick="document.getElementById('contact-subject').value='${phoneDat.title}'; document.getElementById('contact').scrollIntoView({behavior:'smooth'})" class="w-full mt-8 bg-white text-bg py-4 rounded-xl font-bold hover:bg-energy hover:text-white transition-colors">
+                        תיאום שיחה
+                     </button>
+                </div>
+             `;
+                return;
+            }
+
+            contentContainer.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${currentArray.length > 2 ? '3' : '2'} gap-8 justify-center max-w-7xl mx-auto">
+                ${currentArray.map(service => `
+                    <div class="glass-panel-dark rounded-[2rem] border ${service.isPopular ? 'border-energy shadow-[0_0_30px_rgba(255,77,0,0.15)]' : 'border-white/10'} p-8 md:p-10 relative flex flex-col overflow-hidden group hover:-translate-y-2 transition-transform duration-500">
+                        ${service.isPopular ? `<div class="absolute top-0 right-8 bg-energy text-white text-xs font-bold px-4 py-1 rounded-b-lg tracking-widest uppercase shadow-[0_5px_15px_rgba(255,77,0,0.4)]">הנפוץ ביותר</div>` : ''}
+                        
+                        <div class="mb-8 mt-4">
+                            <h3 class="text-2xl font-bold text-white mb-3 line-clamp-2">${service.title}</h3>
+                            <p class="text-text-muted line-clamp-2 min-h-[3rem]">${service.description}</p>
+                        </div>
+                        
+                        <div class="flex-grow space-y-3 mb-10 border-t border-white/5 pt-8">
+                            ${service.pricing.map(p => `
+                                <div class="flex justify-between items-center p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10 ${p.period.includes('6') ? 'bg-white/5 border-white/10' : ''}">
+                                    <span class="text-white font-medium">${p.period}</span>
+                                    <span class="text-2xl font-black ${p.period.includes('6') ? 'text-energy' : 'text-white'}">${p.price} <span class="text-sm font-normal text-white/50">₪</span></span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <button onclick="document.getElementById('contact-subject').value='${service.title}'; document.getElementById('contact').scrollIntoView({behavior:'smooth'})" class="w-full py-4 rounded-xl font-bold transition-all ${service.isPopular ? 'bg-energy text-white hover:bg-energy-light shadow-[0_10px_30px_-10px_rgba(255,77,0,0.4)]' : 'bg-white text-bg hover:bg-gray-200'}">
+                            בחר במסלול
+                        </button>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        }
+
+        // Assign globally
+        window.setTrackTab = function (idx) {
+            activeTab = idx;
+            renderTracks();
+        };
+
+        renderTracks();
+    });
+
+    // --- COURSES LOGIC (Inject HTML + Cursor Follower Logic) ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const coursesContainer = document.getElementById('courses-list-container');
+        if (!coursesContainer) return;
+
+        coursesContainer.innerHTML += SITE_DATA.courses.map(course => `
+        <div 
+            class="course-item group relative py-12 md:py-16 border-b border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-8 z-10"
+            data-image="${course.image}"
+            onmouseenter="handleCourseEnter(this)"
+            onmouseleave="handleCourseLeave(this)"
+        >
+            <div class="absolute inset-0 bg-energy/0 group-hover:bg-energy/5 transition-colors duration-500 -z-10 rounded-2xl mx-[-2rem] px-[2rem]"></div>
+            
+            <div class="max-w-3xl pr-4">
+                <p class="text-energy font-bold tracking-widest uppercase text-xs mb-4 flex items-center gap-2">
+                    <span class="w-8 h-px bg-energy"></span>
+                    ${course.type}
+                </p>
+                <h3 class="text-3xl md:text-5xl font-heading font-bold text-white group-hover:text-energy transition-colors duration-300">
+                    ${course.title}
+                </h3>
+            </div>
+            
+            <button onclick="document.dispatchEvent(new CustomEvent('openDownloadPopup', { detail: { resourceName: '${course.freeValue}' } }))" class="shrink-0 flex items-center gap-3 bg-white/5 hover:bg-energy border border-white/10 hover:border-energy text-white px-6 py-4 rounded-full font-bold transition-all duration-300 transform group-hover:-translate-x-4 pl-4">
+                <span>${course.freeValue}</span>
+                <i data-lucide="download" class="w-4 h-4 text-energy group-hover:text-white transition-colors duration-300"></i>
+            </button>
+        </div>
+    `).join('');
+
+        lucide.createIcons();
+    });
+
+    const courseFollower = document.getElementById('course-cursor-follower');
+    let followerTargetPos = { x: 0, y: 0 };
+    let followerCurrentPos = { x: 0, y: 0 };
+    let followerActive = false;
+    let followerRaf;
+
+    window.handleCoursesMouseMove = function (e) {
+        if (!courseFollower) return;
+        const coursesSection = document.getElementById('courses');
+        if (!coursesSection) return;
+
+        const rect = coursesSection.getBoundingClientRect();
+        followerTargetPos.x = e.clientX - rect.left;
+        // Follower needs pageY or clientY relative to the container. The parent holds position:relative.
+        // e.clientY - rect.top is position relative to section top
+        followerTargetPos.y = e.clientY - rect.top;
+    };
+
+    window.handleCourseEnter = function (el) {
+        if (!courseFollower) return;
+        followerActive = true;
+        courseFollower.style.backgroundImage = `url(${el.getAttribute('data-image')})`;
+        courseFollower.style.opacity = '1';
+        courseFollower.style.transform = `translate(${followerCurrentPos.x}px, ${followerCurrentPos.y}px) scale(1) rotate(0deg)`;
+    };
+
+    window.handleCourseLeave = function (el) {
+        if (!courseFollower) return;
+        followerActive = false;
+        courseFollower.style.opacity = '0';
+        courseFollower.style.transform = `translate(${followerCurrentPos.x}px, ${followerCurrentPos.y}px) scale(0.8) rotate(-10deg)`;
+    };
+
+    // Smooth animation for cursor follower
+    function animateFollower() {
+        if (followerActive && courseFollower) {
+            // LERP
+            followerCurrentPos.x += (followerTargetPos.x - followerCurrentPos.x) * 0.1;
+            followerCurrentPos.y += (followerTargetPos.y - followerCurrentPos.y) * 0.1;
+            courseFollower.style.transform = `translate(${followerCurrentPos.x}px, ${followerCurrentPos.y}px) translate(-50%, -50%) scale(1) rotate(0deg)`;
+        }
+        followerRaf = requestAnimationFrame(animateFollower);
+    }
+    if (courseFollower) {
+        animateFollower();
+    }
+
+    // --- TESTIMONIALS LOGIC ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const testiContainer = document.getElementById('testimonials-grid-container');
+        if (!testiContainer) return;
+
+        testiContainer.innerHTML = SITE_DATA.testimonials.slice(0, 3).map((item, idx) => `
+        <div class="anim-stagger-child glass-panel-dark rounded-[2rem] p-8 border border-white/5 relative group hover:-translate-y-2 transition-transform duration-500 hover:border-energy/30">
+            <div class="absolute -top-6 -right-6 text-energy/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:rotate-12 group-hover:scale-110">
+                <i data-lucide="quote" class="w-20 h-20 fill-current"></i>
+            </div>
+            
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-12 h-12 rounded-full bg-energy/10 flex items-center justify-center text-energy font-bold text-xl border border-energy/20">
+                    ${item.name.charAt(0)}
+                </div>
+                <div>
+                    <h4 class="font-bold text-white text-lg">${item.name}</h4>
+                    <div class="flex gap-1 text-energy">
+                        ${[...Array(5)].map(() => `<i data-lucide="star" class="w-3 h-3 fill-current"></i>`).join('')}
+                    </div>
+                </div>
+            </div>
+            
+            <p class="text-text-muted leading-relaxed mb-6 italic relative z-10">"${item.text}"</p>
+            
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-energy/10 border border-energy/20 text-energy text-sm font-bold w-auto">
+                <i data-lucide="trending-down" class="w-4 h-4"></i>
+                <span>${item.result}</span>
+            </div>
+        </div>
+    `).join('');
+
+        lucide.createIcons();
+    });
+
+    // --- FAQ LOGIC ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const faqContainer = document.getElementById('faq-container');
+        if (!faqContainer) return;
+
+        let activeFaqObj = -1;
+
+        window.toggleFaq = function (idx) {
+            if (activeFaqObj === idx) activeFaqObj = -1;
+            else activeFaqObj = idx;
+            renderFaq();
+        };
+
+        function renderFaq() {
+            faqContainer.innerHTML = SITE_DATA.faq.map((item, idx) => `
+            <div class="anim-stagger-child glass-panel-dark rounded-2xl border border-white/5 overflow-hidden">
+                <button 
+                    onclick="toggleFaq(${idx})"
+                    class="w-full flex items-center justify-between p-6 text-right focus:outline-none focus:bg-white/5 transition-colors"
+                >
+                    <span class="text-lg md:text-xl font-bold text-white">${item.question}</span>
+                    <i data-lucide="chevron-down" class="w-6 h-6 text-energy transition-transform duration-300 ${activeFaqObj === idx ? 'rotate-180' : ''}"></i>
+                </button>
+                
+                <div class="transition-all duration-300 overflow-hidden ${activeFaqObj === idx ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}">
+                    <div class="p-6 pt-0 text-text-muted leading-relaxed border-t border-white/5 mt-2">
+                        ${item.answer}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+            lucide.createIcons();
+        }
+
+        renderFaq();
+    });
+
+    // --- POPUPS LOGIC ---
+    function openLeadMagnet() {
+        const el = document.getElementById('lead-magnet-popup');
+        const content = document.getElementById('lead-magnet-content');
+        if (el && content) {
+            el.classList.remove('hidden');
+            // trigger animation
+            setTimeout(() => {
+                el.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+    }
+
+    function closeLeadMagnet() {
+        const el = document.getElementById('lead-magnet-popup');
+        const content = document.getElementById('lead-magnet-content');
+        if (el && content) {
+            el.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => el.classList.add('hidden'), 300);
+        }
+    }
+
+    function submitLeadMagnet(e) {
+        e.preventDefault();
+        console.log("Lead Magnet Submitted:", document.getElementById('lm-name').value, document.getElementById('lm-email').value);
+        document.getElementById('lead-magnet-form-view').classList.add('hidden');
+        document.getElementById('lead-magnet-success-view').classList.remove('hidden');
+        setTimeout(closeLeadMagnet, 3000);
+    }
+
+    function openDownloadPopup(resourceName) {
+        const el = document.getElementById('download-popup');
+        const content = document.getElementById('download-popup-content');
+        const resDom = document.getElementById('download-resource-name');
+
+        if (el && content && resDom) {
+            resDom.innerText = resourceName;
+            // Reset form
+            document.getElementById('download-form-view').classList.remove('hidden');
+            document.getElementById('download-success-view').classList.add('hidden');
+
+            el.classList.remove('hidden');
+            setTimeout(() => {
+                el.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+    }
+
+    function closeDownloadPopup() {
+        const el = document.getElementById('download-popup');
+        const content = document.getElementById('download-popup-content');
+        if (el && content) {
+            el.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => el.classList.add('hidden'), 300);
+        }
+    }
+
+    function submitDownloadPopup(e) {
+        e.preventDefault();
+        console.log("Download popup submitted:", document.getElementById('dl-name').value, document.getElementById('dl-email').value);
+        document.getElementById('download-form-view').classList.add('hidden');
+        document.getElementById('download-success-view').classList.remove('hidden');
+        setTimeout(closeDownloadPopup, 3000);
+    }
+
+    // Add event listener for custom download event 
+    window.addEventListener('openDownloadPopup', (e) => {
+        openDownloadPopup(e.detail.resourceName);
+    });
+
+    // Auto-show lead magnet after 10s or scrolling 50%
+    document.addEventListener('DOMContentLoaded', () => {
+        let hasShownLeadMagnet = sessionStorage.getItem('leadMagnetShown') === 'true';
+
+        if (!hasShownLeadMagnet) {
+            const timer = setTimeout(() => {
+                openLeadMagnet();
+                sessionStorage.setItem('leadMagnetShown', 'true');
+            }, 10000);
+
+            const scrollHandler = () => {
+                const scrollPosition = window.scrollY;
+                const windowHeight = window.innerHeight;
+                const documentHeight = document.documentElement.scrollHeight;
+                if (scrollPosition > (documentHeight - windowHeight) / 2) {
+                    openLeadMagnet();
+                    sessionStorage.setItem('leadMagnetShown', 'true');
+                    window.removeEventListener('scroll', scrollHandler);
+                    clearTimeout(timer);
+                }
+            };
+
+            window.addEventListener('scroll', scrollHandler);
+        }
+    });
+
+</script>
+</html>
